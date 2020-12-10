@@ -43,7 +43,12 @@ data "aws_ami" "ami" {
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-*-amd64-server"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-*"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = "x86_6"
   }
 
   filter {
