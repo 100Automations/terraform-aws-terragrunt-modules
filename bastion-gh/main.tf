@@ -2,28 +2,13 @@ locals {
   // selects a randoms public subnet to create the bastion in
   subnet_id = element(var.public_subnet_ids, 1)
 
-  // template_file_init = templatefile("${path.module}/user_data.sh", {
-  //   ssh_user = var.ssh_user
-  //   github_usernames = var.github_usernames
-  //   keys_update_frequency      = var.keys_update_frequency
-  //   enable_hourly_cron_updates = var.enable_hourly_cron_updates
-  // })
+  template_file_init = templatefile("${path.module}/ssh.sh", {
+    ssh_user = var.ssh_user,
+    github_usernames = var.github_usernames,
+    keys_update_frequency      = var.keys_update_frequency,
+    enable_hourly_cron_updates = var.enable_hourly_cron_updates
+  })
 }
-
-// data "template_file" "user_data" {
-//   // template = file("${path.module}/user_data.sh")
-//   template = file("${path.module}/user_data.sh")
-
-//   vars = {
-//     // s3_bucket_name              = var.s3_bucket_name
-//     // s3_bucket_uri               = var.s3_bucket_uri
-//     ssh_user                   = var.ssh_user
-//     github_usernames           = var.github_usernames
-//     keys_update_frequency      = var.keys_update_frequency
-//     enable_hourly_cron_updates = var.enable_hourly_cron_updates
-//     // additional_user_data_script = var.additional_user_data_script
-//   }
-// }
 
 resource "aws_instance" "bastion" {
  ami                    = data.aws_ami.ami.id
@@ -49,7 +34,7 @@ data "aws_ami" "ami" {
   filter {
     name   = "architecture"
     values = ["x86_64"]
-  }
+  } 
 
   filter {
     name   = "virtualization-type"
