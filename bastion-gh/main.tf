@@ -3,10 +3,14 @@ locals {
   subnet_id = element(var.public_subnet_ids, 1)
 
   template_file_init = templatefile("${path.module}/user_data.sh", {
-    ssh_user                 = var.ssh_user,
-    github_file_usernames    = github_file_usernames,
-    keys_update_frequency    = var.keys_update_frequency,
-    cron_key_update_schedule = var.cron_key_update_schedule
+    ssh_user                    = var.ssh_user,
+    github_repo_owner           = github_repo_owner,
+    github_repo_name            = github_repo_name,
+    github_branch               = github_branch,
+    github_filepath             = github_filepath,
+    keys_update_frequency       = var.keys_update_frequency,
+    cron_key_update_schedule    = var.cron_key_update_schedule,
+    additional_user_data_script = var.additional_user_data_script
   })
 }
 
