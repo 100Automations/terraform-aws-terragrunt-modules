@@ -9,7 +9,7 @@ variable "vpc_id" {
   description = "VPC ID"
 }
 
-variable "var.tags" {
+variable "tags" {
   default = { terraform_managed = true }
 }
 
