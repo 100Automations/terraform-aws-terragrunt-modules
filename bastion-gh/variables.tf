@@ -3,8 +3,8 @@ variable account_id {
 }
 
 variable region {
-  type        = string
-  default     = "us-east-2"
+  type    = string
+  default = "us-east-2"
 }
 
 variable vpc_id {
@@ -13,10 +13,11 @@ variable vpc_id {
 
 variable public_subnet_ids {
   description = "public subnet ids for where to place bastion"
+  type        = list(string)
 }
 
 variable bastion_name {
-  type        = string
+  type = string
 }
 
 variable bastion_instance_type {
