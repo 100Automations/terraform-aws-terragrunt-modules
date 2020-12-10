@@ -9,7 +9,7 @@
 # Import Github Public SSH Keys
 # -----------------------------
 
-cat <<"EOF" > /home/root/create_ssh_authorized_keys.sh
+cat <<"EOF" > /home/ubuntu/create_ssh_user_authorized_keys.sh
 #!/usr/bin/env bash
 set -e
 SSH_USER=${ssh_user}
@@ -45,8 +45,8 @@ done
 EOF
 
 # Execute now
-chmod 755 /home/root/create_ssh_authorized_keys.sh
-su root -c /home/root/create_ssh_authorized_keys.sh
+chmod 755 /home/ubuntu/create_ssh_user_authorized_keys.sh
+su root -c /home/ubuntu/create_ssh_user_authorized_keys.sh
 
 # Enable timestamp in History for all users
 echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile && source  /etc/profile
@@ -64,7 +64,7 @@ fi
 
 # Add to cron
 if [ -n "$cron_key_update_schedule" ]; then
-  croncmd="/home/root/create_ssh_authorized_keys.sh"
+  croncmd="/home/ubuntu/create_ssh_user_authorized_keys.sh"
   cronjob="$cron_key_update_schedule $croncmd"
   ( crontab -u root -l | grep -v "$croncmd" ; echo "$cronjob" ) | crontab -u root -
 fi
