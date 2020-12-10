@@ -1,14 +1,14 @@
-// locals {
-//   // selects a randoms public subnet to create the bastion in
-//   subnet_id = element(var.public_subnet_ids, 1)
+locals {
+  // selects a randoms public subnet to create the bastion in
+  subnet_id = element(var.public_subnet_ids, 1)
 
-//     template_file_init = templatefile("${path.module}/user_data.sh", {
-//     ssh_user = var.ssh_user
-//     github_usernames = var.github_usernames
-//     keys_update_frequency      = var.keys_update_frequency
-//     enable_hourly_cron_updates = var.enable_hourly_cron_updates
-//   }
-// }
+  // template_file_init = templatefile("${path.module}/user_data.sh", {
+  //   ssh_user = var.ssh_user
+  //   github_usernames = var.github_usernames
+  //   keys_update_frequency      = var.keys_update_frequency
+  //   enable_hourly_cron_updates = var.enable_hourly_cron_updates
+  // })
+}
 
 // data "template_file" "user_data" {
 //   // template = file("${path.module}/user_data.sh")
