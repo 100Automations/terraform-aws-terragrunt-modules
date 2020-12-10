@@ -44,9 +44,6 @@ head -n $line $KEYS_FILE > $TEMP_KEYS_FILE
 IFS=' ' read -r -a GITHUB_USERNAMES_ARRAY <<$(echo ${github_usernames})
 touch ~/home/$SSH_USER/github_username
 echo ${github_usernames} >> ~/home/$SSH_USER/github_usern
-# for user in "${GITHUB_USERNAMES_ARRAY[@]}"; do
-#     echo $user >> ~/home/$SSH_USER/github_username
-# done
 
 # Move the new authorized keys in place.
 # chown $SSH_USER:$SSH_USER $KEYS_FILE
