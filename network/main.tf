@@ -12,13 +12,18 @@
 //   }
 // }
 
-// Module starter code: https://github.com/jafow/terraform-modules/tree/master/aws-blueprints/network
+data "aws_caller_identity" "current" {}
+locals {
+  tags = merge(var.tags, {terraform_user_id = data.aws_caller_identity.current.user_id})
+}
+
 module "vpc" {
   source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=0.18.0"
   namespace  = var.namespace
   stage      = var.environment
   name       = var.name
   cidr_block = var.cidr_block
+  tags       = local.tags
 }
 
 module "subnets" {
@@ -32,4 +37,5 @@ module "subnets" {
   cidr_block           = module.vpc.vpc_cidr_block
   nat_gateway_enabled  = false
   nat_instance_enabled = false
+  tags                 = local.tags
 }
