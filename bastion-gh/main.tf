@@ -15,7 +15,8 @@ resource "aws_instance" "bastion" {
  instance_type          = var.bastion_instance_type
  subnet_id              = local.subnet_id
  vpc_security_group_ids = [aws_security_group.bastion.id]
-//  user_data              = local.template_file_init
+ user_data              = local.template_file_init
+ key_name = "fo-us-west-1-kp"
 
  tags = {
    Name = var.bastion_name

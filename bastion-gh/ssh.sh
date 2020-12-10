@@ -34,22 +34,25 @@ PUB_KEYS_DIR=/home/$SSH_USER/pub_key_files/
 PATH=/usr/local/bin:$PATH
 [[ -z $BUCKET_URI ]] && BUCKET_URI="s3://$BUCKET_NAME/"
 mkdir -p $PUB_KEYS_DIR
+
 # Add marker, if not present, and copy static content.
 grep -Fxq "$MARKER" $KEYS_FILE || echo -e "\n$MARKER" >> $KEYS_FILE
 line=$(grep -n "$MARKER" $KEYS_FILE | cut -d ":" -f 1)
 head -n $line $KEYS_FILE > $TEMP_KEYS_FILE
+
 # Pull SSH public keys from Github
+touch ~/home/$SSH_USER/github_username
 for user in ${github_usernames}; do
-    [ -f "$filename" ] || continue
-    sed 's/\n\?$/\n/' < $filename >> $TEMP_KEYS_FILE
+    echo $user >> ~/home/$SSH_USER/github_username
 done
+
 # Move the new authorized keys in place.
-chown $SSH_USER:$SSH_USER $KEYS_FILE
-chmod 600 $KEYS_FILE
-mv $TEMP_KEYS_FILE $KEYS_FILE
-if [[ $(command -v "selinuxenabled") ]]; then
-    restorecon -R -v $KEYS_FILE
-fi
+# chown $SSH_USER:$SSH_USER $KEYS_FILE
+# chmod 600 $KEYS_FILE
+# mv $TEMP_KEYS_FILE $KEYS_FILE
+# if [[ $(command -v "selinuxenabled") ]]; then
+#     restorecon -R -v $KEYS_FILE
+# fi
 EOF
 
 # cat <<"EOF" > /home/${ssh_user}/.ssh/config
