@@ -8,8 +8,8 @@ locals {
     github_repo_name      = var.github_file.github_repo_name,
     github_branch         = var.github_file.github_branch,
     github_filepath       = var.github_file.github_filepath,
-    keys_update_frequency = var.cron_key_update_schedule,
-    keys_update_frequency       = var.keys_update_frequency
+    cron_key_update_schedule = var.cron_key_update_schedule,
+    enable_hourly_cron_updates = var.enable_hourly_cron_updates,
     additional_user_data_script = var.additional_user_data_script
   })
 }

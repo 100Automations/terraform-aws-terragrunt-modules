@@ -56,16 +56,16 @@ echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile && source  /etc/profile
 # -----------------------------
 
 # Be backwards compatible with old cron update enabler
-if [ "${enable_hourly_cron_updates}" = 'true' -a -z "${keys_update_frequency}" ]; then
-  keys_update_frequency="0 * * * *"
+if [ "${enable_hourly_cron_updates}" = 'true' -a -z "${cron_key_update_schedule}" ]; then
+  cron_key_update_schedule="0 * * * *"
 else
-  keys_update_frequency="${keys_update_frequency}"
+  cron_key_update_schedule="${cron_key_update_schedule}"
 fi
 
 # Add to cron
-if [ -n "$keys_update_frequency" ]; then
+if [ -n "$cron_key_update_schedule" ]; then
   croncmd="/home/root/create_ssh_authorized_keys.sh"
-  cronjob="$keys_update_frequency $croncmd"
+  cronjob="$cron_key_update_schedule $croncmd"
   ( crontab -u root -l | grep -v "$croncmd" ; echo "$cronjob" ) | crontab -u root -
 fi
 
