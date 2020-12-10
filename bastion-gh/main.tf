@@ -48,7 +48,7 @@ data "aws_ami" "ami" {
 
   filter {
     name   = "architecture"
-    values = "x86_6"
+    values = ["x86_6"]
   }
 
   filter {
