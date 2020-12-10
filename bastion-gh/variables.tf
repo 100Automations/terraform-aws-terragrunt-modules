@@ -73,21 +73,25 @@ variable "ssh_user" {
   default = "ubuntu"
 }
 
-variable "github_repo_owner" {
-  type = string
+variable "github_file" {
+  type = map(string)
 }
 
-variable "github_repo_name" {
-  type = string
-}
+// variable "github_repo_owner" {
+//   type = string
+// }
 
-variable "github_branch" {
-  type = string
-}
+// variable "github_repo_name" {
+//   type = string
+// }
 
-variable "github_filepath" {
-  type = string
-}
+// variable "github_branch" {
+//   type = string
+// }
+
+// variable "github_filepath" {
+//   type = string
+// }
 
 variable "enable_hourly_cron_updates" {
   default = "false"
