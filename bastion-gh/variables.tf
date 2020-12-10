@@ -32,7 +32,6 @@ variable cron_key_update_schedule {
 
 variable github_usernames {
   description = "the name of the public key files in ./public_keys without the file extension; example ['alice', 'bob', 'carol']"
-  type        = list(string)
 }
 
 variable "enable_hourly_cron_updates" {
