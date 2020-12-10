@@ -11,7 +11,7 @@ variable "vpc_id" {
 
 variable "tags" {
   default = { terraform_managed = "true" }
-  type = map
+  type    = map
 }
 
 // --------------------------

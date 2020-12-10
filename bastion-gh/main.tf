@@ -22,7 +22,7 @@ resource "aws_instance" "bastion" {
  user_data              = local.template_file_init
  key_name               = var.key_name
 
- tags = merge(var.tags, { Name = var.bastion_name })
+ tags = merge(var.tags, {Name = var.bastion_name})
 }
 
 // Pull latest Ubuntu AMI
