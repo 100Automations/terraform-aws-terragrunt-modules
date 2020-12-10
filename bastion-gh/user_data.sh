@@ -1,27 +1,13 @@
 #!/usr/bin/env bash
 
-##############
-# Install deps
-##############
+# -----------------------------
+# Created by Darren Pham
+# github.com/darpham
+# ------------------------------
 
-# Apt based distro
-if command -v apt-get &>/dev/null; then
-  apt-get update
-  apt-get install python-pip jq -y
-
-# Yum based distro
-elif command -v yum &>/dev/null; then
-  yum update -y
-  # epel provides python-pip & jq
-  yum install -y epel-release
-  yum install python-pip jq -y
-fi
-
-#####################
-
+# -----------------------------
 # Import Github Public SSH Keys
-
-##############
+# -----------------------------
 
 cat <<"EOF" > /home/${ssh_user}/update_ssh_authorized_keys.sh
 #!/usr/bin/env bash
@@ -65,3 +51,24 @@ chmod 755 /home/${ssh_user}/update_ssh_authorized_keys.sh
 
 # Execute now
 su ${ssh_user} -c /home/${ssh_user}/update_ssh_authorized_keys.sh
+
+# -----------------------------
+# Setup Cron Job
+# -----------------------------
+
+# Be backwards compatible with old cron update enabler
+if [ "${enable_hourly_cron_updates}" = 'true' -a -z "${keys_update_frequency}" ]; then
+  keys_update_frequency="0 * * * *"
+else
+  keys_update_frequency="${keys_update_frequency}"
+fi
+
+# Add to cron
+if [ -n "$keys_update_frequency" ]; then
+  croncmd="/home/${ssh_user}/update_ssh_authorized_keys.sh"
+  cronjob="$keys_update_frequency $croncmd"
+  ( crontab -u ${ssh_user} -l | grep -v "$croncmd" ; echo "$cronjob" ) | crontab -u ${ssh_user} -
+fi
+
+# Append addition user-data script
+${additional_user_data_script}

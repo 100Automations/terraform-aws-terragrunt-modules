@@ -3,10 +3,10 @@ locals {
   subnet_id = element(var.public_subnet_ids, 1)
 
   template_file_init = templatefile("${path.module}/user_data.sh", {
-    ssh_user = var.ssh_user,
-    github_usernames = var.github_usernames,
-    keys_update_frequency      = var.keys_update_frequency,
-    enable_hourly_cron_updates = var.enable_hourly_cron_updates
+    ssh_user                 = var.ssh_user,
+    github_file_usernames    = github_file_usernames,
+    keys_update_frequency    = var.keys_update_frequency,
+    cron_key_update_schedule = var.cron_key_update_schedule
   })
 }
 
@@ -16,13 +16,13 @@ resource "aws_instance" "bastion" {
  subnet_id              = local.subnet_id
  vpc_security_group_ids = [aws_security_group.bastion.id]
  user_data              = local.template_file_init
- key_name = "fo-us-west-1-kp"
+ key_name               = var.key_name
 
- tags = {
-   Name = var.bastion_name
- }
+ tags = merge(var.tags, { Name = var.bastion_name })
 }
 
+// Pull latest Ubuntu AMI
+// TODO: Find publicly available hardened ubuntu AMI
 data "aws_ami" "ami" {
   owners      = ["099720109477"]
   most_recent = true
