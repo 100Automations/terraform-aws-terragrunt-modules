@@ -1,14 +1,14 @@
-locals {
-  // selects a randoms public subnet to create the bastion in
-  subnet_id = element(var.public_subnet_ids, 1)
+// locals {
+//   // selects a randoms public subnet to create the bastion in
+//   subnet_id = element(var.public_subnet_ids, 1)
 
-    template_file_init = templatefile("${path.module}/user_data.sh", {
-    ssh_user = var.ssh_user
-    github_usernames = var.github_usernames
-    keys_update_frequency      = var.keys_update_frequency
-    enable_hourly_cron_updates = var.enable_hourly_cron_updates
-  }
-}
+//     template_file_init = templatefile("${path.module}/user_data.sh", {
+//     ssh_user = var.ssh_user
+//     github_usernames = var.github_usernames
+//     keys_update_frequency      = var.keys_update_frequency
+//     enable_hourly_cron_updates = var.enable_hourly_cron_updates
+//   }
+// }
 
 // data "template_file" "user_data" {
 //   // template = file("${path.module}/user_data.sh")
@@ -30,7 +30,7 @@ resource "aws_instance" "bastion" {
  instance_type          = var.bastion_instance_type
  subnet_id              = local.subnet_id
  vpc_security_group_ids = [aws_security_group.bastion.id]
- user_data              = local.template_file_init
+//  user_data              = local.template_file_init
 
  tags = {
    Name = var.bastion_name
