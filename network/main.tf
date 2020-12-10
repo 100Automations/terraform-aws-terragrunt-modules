@@ -14,7 +14,7 @@
 
 data "aws_caller_identity" "current" {}
 locals {
-  tags = merge(var.tags, {terraform_user_id = data.aws_caller_identity.current.arn})
+  tags = merge(var.tags, {terraform_user_arn = data.aws_caller_identity.current.arn})
 }
 
 module "vpc" {
