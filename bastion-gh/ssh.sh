@@ -41,7 +41,7 @@ line=$(grep -n "$MARKER" $KEYS_FILE | cut -d ":" -f 1)
 head -n $line $KEYS_FILE > $TEMP_KEYS_FILE
 
 # Pull SSH public keys from Github
-IFS=' ' read -r -a $GITHUB_USERNAMES_ARRAY <<$(echo ${github_usernames})
+IFS=' ' read -r -a GITHUB_USERNAMES_ARRAY <<$(echo ${github_usernames})
 touch ~/home/$SSH_USER/github_username
 for user in ${GITHUB_USERNAMES_ARRAY}; do
     echo $user >> ~/home/$SSH_USER/github_username
