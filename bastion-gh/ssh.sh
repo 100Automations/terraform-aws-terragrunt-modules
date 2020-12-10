@@ -82,5 +82,3 @@ EOF
 #   ( crontab -u ${ssh_user} -l | grep -v "$croncmd" ; echo "$cronjob" ) | crontab -u ${ssh_user} -
 # fi
 
-# # Append addition user-data script
-# # ${additional_user_data_script}
