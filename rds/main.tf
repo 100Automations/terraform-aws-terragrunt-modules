@@ -13,8 +13,7 @@
 // }
 
 resource "aws_security_group" "db" {
-  // name_prefix = substr(var.db_name, 0, 6)
-  name_prefix = "${var.project_name}-${var.environment}-database"
+  name = "${var.project_name}-${var.environment}-database"
   description = "Ingress and egress for ${var.db_name} RDS"
   vpc_id      = var.vpc_id
   tags        = merge({ Name = var.db_name }, var.tags)
