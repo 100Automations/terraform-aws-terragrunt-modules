@@ -27,10 +27,9 @@ line=$(grep -n "$MARKER" $KEYS_FILE | cut -d ":" -f 1)
 
 # Pull SSH public keys from Github
 wget --output-document $TEMP_GITHUB_KEYS_FILE $GITHUB_SSH_USERNAMES_URL
-IFS=' ' read -r -a GITHUB_USERNAMES_ARRAY <<< $(grep "^[^#;]" $TEMP_GITHUB_KEYS_FILE | tr '\n' ' ')
 
 # Create user and move authorized keys
-for gh_user in ${GITHUB_USERNAMES_ARRAY[@]}; do
+for gh_user in $(grep "^[^#;]" $TEMP_GITHUB_KEYS_FILE); do
   if ! id "$gh_user" &>/dev/null; then
     useradd -m -d /home/$gh_user -s /bin/bash $gh_user
     install -d -m 700 -o $gh_user -g $gh_user /home/$gh_user/.ssh
