@@ -15,12 +15,13 @@ locals {
 }
 
 resource "aws_instance" "bastion" {
- ami                    = data.aws_ami.ami.id
- instance_type          = var.bastion_instance_type
- subnet_id              = local.subnet_id
- vpc_security_group_ids = [aws_security_group.bastion.id]
- user_data              = local.template_file_init
- key_name               = var.key_name
+ ami                         = data.aws_ami.ami.id
+ instance_type               = var.bastion_instance_type
+ associate_public_ip_address = false
+ subnet_id                   = local.subnet_id
+ vpc_security_group_ids      = [aws_security_group.bastion.id]
+ user_data                   = local.template_file_init
+ key_name                    = var.key_name
 
  tags = merge(var.tags, {Name = var.bastion_name})
 }
