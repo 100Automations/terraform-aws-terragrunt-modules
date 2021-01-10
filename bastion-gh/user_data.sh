@@ -9,7 +9,7 @@
 # Import Github Public SSH Keys
 # -----------------------------
 
-cat <<-"EOF" > /home/ubuntu/create_ssh_user_authorized_keys.sh
+cat <<"EOF" > /home/ubuntu/create_ssh_user_authorized_keys.sh
 #!/usr/bin/env bash
 set -e
 SSH_USER=${ssh_user}
