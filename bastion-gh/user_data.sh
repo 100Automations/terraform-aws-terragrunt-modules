@@ -9,7 +9,7 @@
 # Import Github Public SSH Keys
 # -----------------------------
 
-cat <<"EOF" > /home/ubuntu/create_ssh_user_authorized_keys.sh
+cat <<-"EOF" > /home/ubuntu/create_ssh_user_authorized_keys.sh
 #!/usr/bin/env bash
 set -e
 SSH_USER=${ssh_user}
@@ -37,9 +37,9 @@ for gh_user in $GITHUB_USERNAMES_ARRAY; do
   install -b -m 600 -o $gh_user -g $gh_user /dev/null /home/$gh_user/.ssh/config
   curl https://github.com/$gh_user.keys | tee -a /home/$gh_user/.ssh/authorized_keys
   usermod -aG sudo $gh_user
-  cat <<"EOFF" > /home/$gh_user/.ssh/config
+  cat <<-EOFF > /home/$gh_user/.ssh/config
   Host *
-      StrictHostKeyChecking no
+    StrictHostKeyChecking no
   EOFF
 done
 EOF
