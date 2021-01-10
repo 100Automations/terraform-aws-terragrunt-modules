@@ -5,5 +5,5 @@ output "security_group_id" {
 
 output "public_ip" {
   description = "the public ip address of the Elastic IP fronting the bastion server"
-  value       = aws_instance.bastion.public_ip
+  value       = aws_eip.eip.public_ip
 }
