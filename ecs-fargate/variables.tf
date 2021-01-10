@@ -48,21 +48,18 @@ variable container_port {
 
 variable task_name {
   type    = string
-  default = "foodoasis-task"
 }
 
 variable health_check_path {
   type    = string
-  default = "/health"
+  default = "/"
 }
 
 variable container_name {
-  default = "foodoasis-container"
   type    = string
 }
 
 variable cluster_name {
-  default = "foodoasis-cluster"
   type    = string
 }
 
