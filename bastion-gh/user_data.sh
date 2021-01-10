@@ -27,20 +27,18 @@ line=$(grep -n "$MARKER" $KEYS_FILE | cut -d ":" -f 1)
 
 # Pull SSH public keys from Github
 wget --output-document $TEMP_GITHUB_KEYS_FILE $GITHUB_SSH_USERNAMES_URL
-IFS='\n' read -r -a GITHUB_USERNAMES_ARRAY <<< $(grep "^[^#;]" $TEMP_GITHUB_KEYS_FILE)
+IFS=' ' read -r -a GITHUB_USERNAMES_ARRAY <<< $(grep "^[^#;]" $TEMP_GITHUB_KEYS_FILE | tr '\n' ' ')
 
 # Create user and move authorized keys
-for gh_user in $GITHUB_USERNAMES_ARRAY; do
-  useradd -m -d /home/$gh_user -s /bin/bash $gh_user
-  install -d -m 700 -o $gh_user -g $gh_user /home/$gh_user/.ssh
-  install -b -m 600 -o $gh_user -g $gh_user /dev/null /home/$gh_user/.ssh/authorized_keys
-  install -b -m 600 -o $gh_user -g $gh_user /dev/null /home/$gh_user/.ssh/config
+for gh_user in ${GITHUB_USERNAMES_ARRAY[@]}; do
+  if ! id "$gh_user" &>/dev/null; then
+    useradd -m -d /home/$gh_user -s /bin/bash $gh_user
+    install -d -m 700 -o $gh_user -g $gh_user /home/$gh_user/.ssh
+    install -b -m 600 -o $gh_user -g $gh_user /dev/null /home/$gh_user/.ssh/authorized_keys
+    install -b -m 600 -o $gh_user -g $gh_user /dev/null /home/$gh_user/.ssh/conf
+    usermod -aG sudo $gh_user
+  fi
   curl https://github.com/$gh_user.keys | tee -a /home/$gh_user/.ssh/authorized_keys
-  usermod -aG sudo $gh_user
-  cat <<-EOFF > /home/$gh_user/.ssh/config
-  Host *
-    StrictHostKeyChecking no
-  EOFF
 done
 EOF
 
@@ -68,6 +66,9 @@ if [ -n "$cron_key_update_schedule" ]; then
   cronjob="$cron_key_update_schedule $croncmd"
   ( crontab -u root -l | grep -v "$croncmd" ; echo "$cronjob" ) | crontab -u root -
 fi
+
+# Disable password requirement for sudoers
+sed -i 's/sudo.*(ALL:ALL) ALL/sudo ALL=(ALL) NOPASSWD:ALL/' /etc/sudoers
 
 # Append addition user-data script
 ${additional_user_data_script}
