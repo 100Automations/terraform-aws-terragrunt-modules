@@ -16,7 +16,6 @@ locals {
 
 resource "aws_instance" "bastion" {
  ami                    = data.aws_ami.ami.id
- eip                    = aws_eip.eip.public_ip
  instance_type          = var.bastion_instance_type
  subnet_id              = local.subnet_id
  vpc_security_group_ids = [aws_security_group.bastion.id]
