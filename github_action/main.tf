@@ -1,7 +1,7 @@
 resource "aws_iam_user" "gha_user" {
   name = "github-action"
 
-  tags = { terraform_managed = "true" }
+  tags = var.tags
 }
 
 
@@ -20,11 +20,28 @@ resource "aws_iam_user_policy" "gha_policy" {
         {
             "Effect": "Allow",
             "Action": [
-                "iam:PassRole",
+                "iam:PassRole"
+            ],
+            "Resource": [
+                "arn:aws:iam::${var.account_id}:role/ecsServiceRole",
+                "arn:aws:iam::${var.account_id}:role/ecsTaskExecutionRole"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
                 "ecs:RegisterTaskDefinition",
                 "ecs:DescribeTaskDefinition",
                 "ecs:UpdateService",
-                "ecs:DescribeServices"
+                "ecs:DescribeServices",
+                "ecr:CompleteLayerUpload",
+                "ecr:GetAuthorizationToken",
+                "ecr:UploadLayerPart",
+                "ecr:InitiateLayerUpload",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:PutImage",
+                "ecr:ListImages",
+                "ecr:CreateRepository"
             ],
             "Resource": "*"
         }
@@ -33,7 +50,15 @@ resource "aws_iam_user_policy" "gha_policy" {
 EOF
 }
 
+output access_key_id {
+  value = aws_iam_access_key.gha_keys.id
+}
 
+output secret_access_key_id {
+  value = aws_iam_access_key.gha_keys.secret
+}
+
+// TODO: Potential Limit Github Action User to only certain resources, not necesary, but optional
 //   policy = <<EOF
 // {
 //    "Version":"2012-10-17",
@@ -71,14 +96,3 @@ EOF
 //    ]
 // }
 // EOF
-
-
-
-
-output access_key_id {
-  value = aws_iam_access_key.gha_keys.id
-}
-
-output secret_access_key_id {
-  value = aws_iam_access_key.gha_keys.secret
-}

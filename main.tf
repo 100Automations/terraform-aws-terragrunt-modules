@@ -1,3 +1,7 @@
+terraform {
+  required_version = "~>0.14.5"
+}
+
 provider "aws" {
   version = "3.20.0"
   region  = var.region
@@ -6,9 +10,8 @@ provider "aws" {
 module "network" {
   source             = "./network"
   region             = var.region
-  namespace          = var.namespace
-  environment              = var.environment
-  name               = "${var.project_name}-${var.environment}vpc"
+  project_name       = var.project_name
+  environment        = var.environment
   cidr_block         = var.cidr_block
   availability_zones = var.availability_zones
 }
@@ -16,8 +19,16 @@ module "network" {
 module "rds" {
   source = "./rds"
 
+  // Input from other modules
+  vpc_id                    = module.network.vpc_id
+  vpc_cidr                  = module.network.vpc_cidr
+  private_subnet_ids        = module.network.private_subnet_ids
+  private_subnet_cidrs      = module.network.private_subnet_cidrs
+  bastion_security_group_id = module.bastion.security_group_id
+
+  // Input from Variables
   project_name = var.project_name
-  environment        = var.environment
+  environment  = var.environment
   region       = var.region
   datetime     = local.datetime
 
@@ -26,33 +37,21 @@ module "rds" {
   db_password = var.db_password
   db_port     = var.db_port
 
-  // Use either instance to pull latest snaphsot for DB
-  // !! Does not currently work if AWS Provider is in a different region
-  db_instance_id_migration     = var.db_instance_id_migration
-  db_instance_region_migration = var.db_instance_region_migration
-
-  // OR specify snapshot directly
   db_snapshot_migration = var.db_snapshot_migration
-
-  // Module Network variables
-  vpc_id                    = module.network.vpc_id
-  private_subnet_ids        = module.network.private_subnet_ids
-  private_subnet_cidrs      = module.network.private_subnet_cidrs
-  bastion_security_group_id = module.bastion.security_group_id
 }
 
 module "applicationlb" {
   source = "./applicationlb"
 
   // Input from other Modules
-  vpc_id            = module.network.vpc_id
-  public_subnet_ids = module.network.public_subnet_ids
+  vpc_id              = module.network.vpc_id
+  public_subnet_ids   = module.network.public_subnet_ids
   acm_certificate_arn = module.acm.acm_certificate_arn
 
   // Input from Variables
-  account_id = var.account_id
-  region     = var.region
-  environment      = var.environment
+  account_id   = var.account_id
+  region       = var.region
+  environment  = var.environment
   project_name = var.project_name
 
   // Container Variables
@@ -65,19 +64,16 @@ module "ecs" {
   source = "./ecs-fargate"
 
   // Input from other Modules
-  vpc_id                    = module.network.vpc_id
-  public_subnet_ids         = module.network.public_subnet_ids
-  db_security_group_id      = module.rds.db_security_group_id
-  bastion_security_group_id = module.bastion.security_group_id
-  aws_ssm_db_hostname_arn   = module.rds.aws_ssm_db_hostname_arn
-  aws_ssm_db_password_arn   = module.rds.aws_ssm_db_password_arn
-  alb_security_group_id     = module.applicationlb.security_group_id
-  alb_target_group_arn      = module.applicationlb.alb_target_group_arn
+  vpc_id                = module.network.vpc_id
+  public_subnet_ids     = module.network.public_subnet_ids
+  db_security_group_id  = module.rds.db_security_group_id
+  alb_security_group_id = module.applicationlb.security_group_id
+  alb_target_group_arn  = module.applicationlb.alb_target_group_arn
 
   // Input from Variables
-  account_id = var.account_id
-  region     = var.region
-  environment      = var.environment
+  account_id   = var.account_id
+  region       = var.region
+  environment  = var.environment
   project_name = var.project_name
 
   // Container Variables
@@ -88,9 +84,9 @@ module "ecs" {
   container_name   = local.container_name
   cluster_name     = local.cluster_name
   task_name        = local.task_name
-  // image_tag        = var.image_tag
+  image_tag        = var.image_tag
 
-  depends_on = [ module.applicationlb ]
+  depends_on = [module.applicationlb]
 }
 
 module "r53" {
@@ -98,27 +94,28 @@ module "r53" {
 
   // Input from other Modules
   alb_external_dns  = module.applicationlb.lb_dns_name
+  bastion_public_ip = module.bastion.public_ip
 
   // Input from Variables
   domain_name = var.domain_name
-  host_names = var.host_names
+  host_names  = var.host_names
 }
 
 module "bastion" {
-  source = "./bastion-gh"
+  source = "./bastion"
 
   // Input from other Modules
   vpc_id            = module.network.vpc_id
   public_subnet_ids = module.network.public_subnet_ids
 
   // Input from Variables
-  account_id = var.account_id
-  region     = var.region
+  account_id   = var.account_id
+  region       = var.region
+  project_name = var.project_name
 
-  bastion_name             = "bastion-${var.project_name}-${var.environment}"
   bastion_instance_type    = var.bastion_instance_type
   cron_key_update_schedule = var.cron_key_update_schedule
-  github_usernames     = var.github_usernames
+  github_usernames         = var.github_usernames
 }
 
 module "acm" {

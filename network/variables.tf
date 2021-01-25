@@ -1,26 +1,25 @@
-variable region {
+locals {
+  envname = "${var.project_name}-${var.environment}"
+}
+
+variable "region" {
   type = string
 }
 
-variable availability_zones {
-  type = list(string)
-}
-
-variable namespace {
+variable "project_name" {
   type = string
 }
 
-variable name {
+variable "environment" {
   type = string
 }
 
-variable environment {
-  type = string
+variable "vpc_cidr" {
+  default = "10.10.0.0/16"
+  type    = string
 }
 
-variable cidr_block { type = string }
-
-variable tags {
+variable "tags" {
   default = { terraform_managed = "true" }
-  type    = map
+  type    = map(any)
 }

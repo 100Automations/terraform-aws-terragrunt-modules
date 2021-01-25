@@ -11,19 +11,8 @@ resource "aws_security_group_rule" "ssh_ingress" {
   from_port         = "22"
   to_port           = "22"
   protocol          = "tcp"
-  cidr_blocks       = var.allowed_cidr
-  ipv6_cidr_blocks  = var.allowed_ipv6_cidr
+  cidr_blocks       = [ "0.0.0.0/0" ]
   security_group_id = aws_security_group.bastion.id
-}
-
-resource "aws_security_group_rule" "ssh_sg_ingress" {
-  count                    = length(var.allowed_security_groups)
-  type                     = "ingress"
-  from_port                = "22"
-  to_port                  = "22"
-  protocol                 = "tcp"
-  source_security_group_id = element(var.allowed_security_groups, count.index)
-  security_group_id        = aws_security_group.bastion.id
 }
 
 resource "aws_security_group_rule" "bastion_all_egress" {

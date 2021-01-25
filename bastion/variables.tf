@@ -1,8 +1,21 @@
+locals {
+  envname = "${var.project_name}-${var.environment}"
+}
+
 // --------------------------
 // Global/General Variables
 // --------------------------
 variable "account_id" {
   description = "AWS Account ID"
+}
+
+variable "project_name" {
+  type        = string
+  description = "The overall name of the project using this infrastructure; used to group related resources by"
+}
+
+variable "environment" {
+  type = string
 }
 
 variable "vpc_id" {
@@ -15,41 +28,8 @@ variable "tags" {
 }
 
 // --------------------------
-// Security Group Variables
-// --------------------------
-variable "allowed_cidr" {
-  type = list(string)
-
-  default = [
-    "0.0.0.0/0",
-  ]
-
-  description = "A list of CIDR Networks to allow ssh access to."
-}
-
-variable "allowed_ipv6_cidr" {
-  type = list(string)
-
-  default = [
-    "::/0",
-  ]
-
-  description = "A list of IPv6 CIDR Networks to allow ssh access to."
-}
-
-variable "allowed_security_groups" {
-  type        = list(string)
-  default     = []
-  description = "A list of Security Group ID's to allow access to."
-}
-
-// --------------------------
 // Bastion Instance Variables
 // --------------------------
-variable "bastion_name" {
-  description = "Name given to the Bastion Server in tags.Name"
-  type = string
-}
 
 variable "bastion_instance_type" {
   description = "The ec2 instance type of the bastion server"
@@ -63,8 +43,8 @@ variable "public_subnet_ids" {
 
 variable "key_name" {
   description = "SSH key to be added as the default AMI user"
-  type = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 // --------------------------
@@ -75,24 +55,14 @@ variable "ssh_user" {
 }
 
 variable "github_file" {
-  type = map(string)
+  type    = map(string)
+  default = {
+    github_repo_owner = "codeforsanjose",
+    github_repo_name  = "Infrastructure",
+    github_branch     = "main",
+    github_filepath   = "bastion_github_users",
+  }
 }
-
-// variable "github_repo_owner" {
-//   type = string
-// }
-
-// variable "github_repo_name" {
-//   type = string
-// }
-
-// variable "github_branch" {
-//   type = string
-// }
-
-// variable "github_filepath" {
-//   type = string
-// }
 
 variable "enable_hourly_cron_updates" {
   default = "false"
@@ -104,5 +74,5 @@ variable "cron_key_update_schedule" {
 }
 
 variable "additional_user_data_script" {
-  default     = ""
+  default = ""
 }

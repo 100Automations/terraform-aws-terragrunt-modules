@@ -1,41 +1,30 @@
-// terraform {
-//   # Live modules pin exact Terraform version; generic modules let consumers pin the version.
-//   # The latest version of Terragrunt (v0.25.1 and above) recommends Terraform 0.13.3 or above.
-//   required_version = "= 0.13.5"
-
-//   # Live modules pin exact provider version; generic modules let consumers pin the version.
-//   required_providers {
-//     aws = {
-//       source  = "hashicorp/aws"
-//       version = "= 3.20.0"
-//     }
-//   }
-// }
-
 data "aws_caller_identity" "current" {}
 locals {
-  tags = merge(var.tags, {terraform_user_arn = data.aws_caller_identity.current.arn})
+  tags = merge(var.tags, { terraform_user_arn = data.aws_caller_identity.current.arn })
+}
+
+data "aws_availability_zones" "available" {
+  state = "available"
 }
 
 module "vpc" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=0.18.0"
-  namespace  = var.namespace
-  stage      = var.environment
-  name       = var.name
-  cidr_block = var.cidr_block
-  tags       = local.tags
-}
+  source = "terraform-aws-modules/vpc/aws"
 
-module "subnets" {
-  source               = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.32.0"
-  availability_zones   = var.availability_zones
-  namespace            = var.namespace
-  stage                = var.environment
-  name                 = var.name
-  vpc_id               = module.vpc.vpc_id
-  igw_id               = module.vpc.igw_id
-  cidr_block           = module.vpc.vpc_cidr_block
-  nat_gateway_enabled  = false
-  nat_instance_enabled = false
-  tags                 = local.tags
+  name = "${local.envname}-vpc"
+
+  cidr = var.vpc_cidr
+
+  azs             = data.aws_availability_zones.available.names
+  private_subnets = [cidrsubnet(var.vpc_cidr, 8, 1), cidrsubnet(var.vpc_cidr, 8, 2)]
+  public_subnets  = [cidrsubnet(var.vpc_cidr, 8, 3), cidrsubnet(var.vpc_cidr, 8, 4)]
+
+  enable_dns_hostnames = true
+  enable_ipv6          = false
+
+  enable_nat_gateway = false
+  single_nat_gateway = false
+
+  tags = local.tags
+
+  vpc_tags = merge({ Name = "${local.envname}-vpc" }, local.tags)
 }
