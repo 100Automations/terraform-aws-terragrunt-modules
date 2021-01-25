@@ -71,12 +71,14 @@ own virtual cloud, and grant access to it via the bastion, aka "jumpbox", server
 To grant users access via the bastion to VPC resources add the user's Github Username to the file you marked as input. A cron job is configured to run to retrieve the user's key and create their account on the bastion server.
 Supply the file via the input: var.bastion_github_file.
 example:
+``` hcl
 variable "bastion_github_file"  = {
     github_repo_owner = "100Automations",
     github_repo_name  = "terraform-aws-terragrunt-modules",
     github_branch     = "main",
     github_filepath   = "bastion_github_users",
 }
+```
 ``` bash
 # List of Github Users allowed to access the bastion server
 # 
