@@ -24,7 +24,7 @@ variable "vpc_id" {
 
 variable "tags" {
   default = { terraform_managed = "true" }
-  type    = map
+  type    = map(any)
 }
 
 // --------------------------
@@ -54,8 +54,8 @@ variable "ssh_user" {
   default = "ubuntu"
 }
 
-variable "github_file" {
-  type    = map(string)
+variable "bastion_github_file" {
+  type = map(string)
   default = {
     github_repo_owner = "codeforsanjose",
     github_repo_name  = "Infrastructure",

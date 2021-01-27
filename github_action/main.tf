@@ -50,11 +50,11 @@ resource "aws_iam_user_policy" "gha_policy" {
 EOF
 }
 
-output access_key_id {
+output "access_key_id" {
   value = aws_iam_access_key.gha_keys.id
 }
 
-output secret_access_key_id {
+output "secret_access_key_id" {
   value = aws_iam_access_key.gha_keys.secret
 }
 
@@ -95,4 +95,4 @@ output secret_access_key_id {
 //       }
 //    ]
 // }
-// EOF
+// 

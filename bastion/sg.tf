@@ -1,9 +1,9 @@
 resource "aws_security_group" "bastion" {
-  name        = var.bastion_name
+  name        = "bastion-${local.envname}"
   vpc_id      = var.vpc_id
   description = "Bastion security group (only SSH inbound access is allowed)"
 
-  tags = merge(var.tags, {Name = var.bastion_name})
+  tags = merge(var.tags, { Name = "bastion-${local.envname}" })
 }
 
 resource "aws_security_group_rule" "ssh_ingress" {
@@ -11,7 +11,7 @@ resource "aws_security_group_rule" "ssh_ingress" {
   from_port         = "22"
   to_port           = "22"
   protocol          = "tcp"
-  cidr_blocks       = [ "0.0.0.0/0" ]
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.bastion.id
 }
 

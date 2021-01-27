@@ -2,7 +2,7 @@
 resource "aws_ecs_cluster" "cluster" {
   name = local.envname
 
-  capacity_providers = [aws_ecs_capacity_provider.prov1.name]
+  capacity_providers = ["FARGATE", aws_ecs_capacity_provider.prov1.name]
 
   default_capacity_provider_strategy {
     capacity_provider = aws_ecs_capacity_provider.prov1.name
@@ -49,7 +49,7 @@ module "asg" {
   lc_name = local.envname
 
   image_id             = data.aws_ami.amazon_linux_ecs.id
-  key_name             = "cfsj-ecs-cluster-prod"
+  key_name             = var.key_name
   instance_type        = "t3.small"
   security_groups      = [aws_security_group.ecs_instance.id]
   iam_instance_profile = "ecsInstanceRole"
@@ -92,11 +92,11 @@ resource "aws_security_group" "ecs_instance" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description = "All ingress from ALB"
-    from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
-    security_groups = [ var.alb_security_group_id ]
+    description     = "All ingress from ALB"
+    from_port       = 0
+    to_port         = 65535
+    protocol        = "tcp"
+    security_groups = [var.alb_security_group_id]
   }
 
   ingress {
@@ -104,7 +104,7 @@ resource "aws_security_group" "ecs_instance" {
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"
-    cidr_blocks = [ var.vpc_cidr ]
+    cidr_blocks = [var.vpc_cidr]
   }
 
   egress {

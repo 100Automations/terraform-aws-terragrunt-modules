@@ -9,19 +9,19 @@ locals {
 // --------------------------
 // Global/General Variables
 // --------------------------
-variable account_id {
+variable "account_id" {
   description = "AWS Account ID"
 }
 
-variable project_name {
+variable "project_name" {
   description = "The overall name of the project using this infrastructure; used to group related resources by"
 }
 
-variable region {
-  type    = string
+variable "region" {
+  type = string
 }
 
-variable environment {
+variable "environment" {
   type = string
 }
 
@@ -33,9 +33,9 @@ variable "vpc_id" {
   description = "VPC ID"
 }
 
-variable tags {
+variable "tags" {
   default = { terraform_managed = "true" }
-  type    = map
+  type    = map(any)
 }
 
 // --------------------------
@@ -46,16 +46,16 @@ variable "cluster_id" {
   type = string
 }
 
-variable cluster_name {
+variable "cluster_name" {
   type = string
 }
 
-variable desired_count {
+variable "desired_count" {
   default = 1
   type    = number
 }
 
-variable health_check_path {
+variable "health_check_path" {
   type    = string
   default = "/"
 }
@@ -76,17 +76,17 @@ variable "container_image" {
   type = string
 }
 
-variable container_cpu {
+variable "container_cpu" {
   type    = number
   default = 0
 }
 
-variable container_memory {
+variable "container_memory" {
   type    = number
   default = 0
 }
 
-variable container_port {
+variable "container_port" {
   type    = number
   default = 80
 }

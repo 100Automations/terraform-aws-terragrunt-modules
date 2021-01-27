@@ -1,15 +1,15 @@
 resource "aws_ecs_task_definition" "task" {
   family = local.task_definition_family
-  
+
   container_definitions = templatefile(
     "${path.module}/templates/container-definition.json",
     {
-    container_memory = var.container_memory == 0 ? 128 : var.container_memory
-    container_cpu    = var.container_cpu
-    container_port   = var.container_port
-    container_name = local.container_name
-    image = var.container_image
-    container_env_vars = jsonencode(var.container_env_vars)
+      container_memory   = var.container_memory == 0 ? 128 : var.container_memory
+      container_cpu      = var.container_cpu
+      container_port     = var.container_port
+      container_name     = local.container_name
+      image              = var.container_image
+      container_env_vars = jsonencode(var.container_env_vars)
     }
   )
 
@@ -36,14 +36,14 @@ resource "aws_ecs_service" "svc" {
 }
 
 resource "aws_lb_target_group" "this" {
-  name     = "${local.envname}-tg"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
+  name                 = "${local.envname}-tg"
+  port                 = 80
+  protocol             = "HTTP"
+  vpc_id               = var.vpc_id
   deregistration_delay = 90
   health_check {
-    interval = 15
-    healthy_threshold = 3
+    interval            = 15
+    healthy_threshold   = 3
     unhealthy_threshold = 2
   }
 }

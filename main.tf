@@ -1,19 +1,36 @@
 terraform {
   required_version = "~>0.14.5"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
+    }
+  }
 }
 
 provider "aws" {
-  version = "3.20.0"
-  region  = var.region
+  region = var.region
+}
+
+terraform {
+  backend "s3" {
+    bucket         = "codeforcalifornia"
+    key            = "terraform-state/foodoasis/dev/terraform.tfstate"
+    region         = "us-west-1"
+    dynamodb_table = "terraform-locks"
+  }
 }
 
 module "network" {
-  source             = "./network"
-  region             = var.region
-  project_name       = var.project_name
-  environment        = var.environment
-  cidr_block         = var.cidr_block
-  availability_zones = var.availability_zones
+  source = "./network"
+
+  // Input from Variables
+  region       = var.region
+  project_name = var.project_name
+  environment  = var.environment
+  vpc_cidr     = var.vpc_cidr
+  tags         = var.tags
 }
 
 module "rds" {
@@ -30,14 +47,14 @@ module "rds" {
   project_name = var.project_name
   environment  = var.environment
   region       = var.region
-  datetime     = local.datetime
 
-  db_username = var.db_username
-  db_name     = var.db_name
-  db_password = var.db_password
-  db_port     = var.db_port
-
+  db_username           = var.db_username
+  db_name               = var.db_name
+  db_password           = var.db_password
+  db_port               = var.db_port
   db_snapshot_migration = var.db_snapshot_migration
+
+  tags = var.tags
 }
 
 module "applicationlb" {
@@ -54,37 +71,24 @@ module "applicationlb" {
   environment  = var.environment
   project_name = var.project_name
 
-  // Container Variables
-  container_port = var.container_port
-  task_name      = local.task_name
-  tags           = var.tags
+  tags = var.tags
 }
 
 module "ecs" {
-  source = "./ecs-fargate"
+  source = "./ecs-ec2"
 
   // Input from other Modules
   vpc_id                = module.network.vpc_id
   public_subnet_ids     = module.network.public_subnet_ids
-  db_security_group_id  = module.rds.db_security_group_id
   alb_security_group_id = module.applicationlb.security_group_id
-  alb_target_group_arn  = module.applicationlb.alb_target_group_arn
 
   // Input from Variables
-  account_id   = var.account_id
-  region       = var.region
-  environment  = var.environment
-  project_name = var.project_name
+  environment            = var.environment
+  project_name           = var.project_name
+  ecs_ec2_instance_count = var.ecs_ec2_instance_count
+  key_name               = var.key_name
 
-  // Container Variables
-  desired_count    = var.desired_count
-  container_memory = var.container_memory
-  container_cpu    = var.container_cpu
-  container_port   = var.container_port
-  container_name   = local.container_name
-  cluster_name     = local.cluster_name
-  task_name        = local.task_name
-  image_tag        = var.image_tag
+  tags = var.tags
 
   depends_on = [module.applicationlb]
 }
@@ -93,8 +97,8 @@ module "r53" {
   source = "./r53"
 
   // Input from other Modules
-  alb_external_dns  = module.applicationlb.lb_dns_name
-  bastion_public_ip = module.bastion.public_ip
+  alb_external_dns = module.applicationlb.lb_dns_name
+  // bastion_public_ip = module.bastion.public_ip
 
   // Input from Variables
   domain_name = var.domain_name
@@ -110,12 +114,14 @@ module "bastion" {
 
   // Input from Variables
   account_id   = var.account_id
-  region       = var.region
   project_name = var.project_name
+  environment  = var.environment
 
   bastion_instance_type    = var.bastion_instance_type
   cron_key_update_schedule = var.cron_key_update_schedule
-  github_usernames         = var.github_usernames
+  bastion_github_file      = var.bastion_github_file
+
+  tags = var.tags
 }
 
 module "acm" {
@@ -123,9 +129,14 @@ module "acm" {
 
   // Input from Variables
   domain_name = var.domain_name
-  // subject_alternative_names = [var.host_name]
+
+  tags = var.tags
 }
 
 module "github_action" {
   source = "./github_action"
+
+  account_id = var.account_id
+
+  tags = var.tags
 }

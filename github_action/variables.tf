@@ -1,6 +1,6 @@
 variable "tags" {
   default = { terraform_managed = "true" }
-  type    = map
+  type    = map(any)
 }
 
 variable "account_id" {

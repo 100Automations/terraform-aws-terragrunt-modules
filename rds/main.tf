@@ -2,14 +2,14 @@ resource "aws_security_group" "db" {
   name        = "${var.project_name}-${var.environment}-database"
   description = "Ingress and egress for ${var.db_name} RDS"
   vpc_id      = var.vpc_id
-  tags        = merge({ Name = var.db_name }, var.tags)
+  tags        = merge({ Name = "${var.project_name}-${var.environment}-database" }, var.tags)
 
   ingress {
-    description = "db ingress from vpp"
+    description = "db ingress from vpc"
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = var.vpc_cidr
+    cidr_blocks = [var.vpc_cidr]
   }
 
   egress {
@@ -22,11 +22,11 @@ resource "aws_security_group" "db" {
 }
 
 module "db" {
-  source = "terraform-aws-modules/rds/aws"
   // https://registry.terraform.io/modules/terraform-aws-modules/rds/aws/2.20.0
-  // version    = "~> 2.0"
-  version    = "~> 2.20.0"
-  identifier = "${var.project_name}-${var.environment}"
+  source  = "terraform-aws-modules/rds/aws"
+  version = "~> 2.20.0"
+
+  identifier = "${var.project_name}-${var.environment}-database"
 
   allow_major_version_upgrade = var.db_allow_major_engine_version_upgrade
   engine                      = "postgres"

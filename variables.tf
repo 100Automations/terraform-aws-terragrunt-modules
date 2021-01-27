@@ -6,11 +6,6 @@ variable "account_id" {
   description = "AWS Account ID"
 }
 
-variable "namespace" {
-  type        = string
-  description = "Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp'"
-}
-
 variable "region" {
   type = string
 }
@@ -35,16 +30,22 @@ variable "domain_name" {
 }
 
 variable "host_names" {
-  type        = string
   description = "The URL where the application will be hosted, must be a subdomain of the domain_name"
+  type        = list(string)
+}
+
+variable "key_name" {
+  type        = string
+  description = "Pre-created SSH Key to use for ECS EC2 Instance"
 }
 
 variable "bastion_hostname" {
   type        = string
-  description = "The A record for bastion, must be a subdomain of the domain_name"
+  description = "The hostname bastion, must be a subdomain of the domain_name"
+  default     = "bastion.foodoasis.net"
 }
 
-variable "cidr_block" {
+variable "vpc_cidr" {
   type        = string
   default     = "10.10.0.0/16"
   description = "The range of IP addresses this vpc will reside in"
@@ -54,6 +55,10 @@ variable "cidr_block" {
 // --------------------------
 // ECS/Fargat Variables
 // --------------------------
+variable "ecs_ec2_instance_count" {
+  type    = number
+  default = 0
+}
 variable "container_cpu" {
   type    = number
   default = 256
@@ -104,7 +109,6 @@ variable "db_port" {
   description = "Databse Port"
 }
 
-// DB Migration Variables (Under construction)
 variable "db_snapshot_migration" {
   type        = string
   description = "Name of snapshot that will used to for new database, must be the same region as var.region"
@@ -114,8 +118,6 @@ variable "db_snapshot_migration" {
 // --------------------------
 // Bastion Module Variables
 // --------------------------
-variable "bastion_name" {}
-
 variable "bastion_instance_type" {
   description = "The ec2 instance type of the bastion server"
   default     = "t2.micro"

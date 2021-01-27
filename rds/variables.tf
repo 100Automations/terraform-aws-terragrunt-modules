@@ -11,7 +11,7 @@ variable "vpc_id" {
   description = "VPC ID"
 }
 
-variable "vpc_cidr_block" {
+variable "vpc_cidr" {
   type        = string
   description = "VPC cidr block"
 }
@@ -38,11 +38,6 @@ variable "private_subnet_ids" {
 variable "tags" {
   default = { terraform_managed = "true" }
   type    = map(any)
-}
-
-variable "datetime" {
-  type        = string
-  description = "Contains string of the datetime when terraform created the resource"
 }
 
 // --------------------------
