@@ -26,19 +26,13 @@ resource "aws_ecs_service" "svc" {
   launch_type     = "EC2"
   desired_count   = var.desired_count
 
-  service_registries {
-    registry_arn   = aws_service_discovery_service.sd_service.arn
-    container_name = local.container_name
-    container_port = var.container_port
-  }
-
   load_balancer {
     target_group_arn = aws_lb_target_group.this.arn
     container_name   = local.container_name
     container_port   = var.container_port
   }
 
-  depends_on = [aws_service_discovery_service.sd_service, aws_lb_target_group.this, aws_lb_listener_rule.static]
+  depends_on = [aws_lb_target_group.this, aws_lb_listener_rule.static]
 }
 
 resource "aws_lb_target_group" "this" {

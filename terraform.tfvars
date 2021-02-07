@@ -16,7 +16,9 @@ ecs_ec2_instance_count = 1
 key_name               = "fo-us-west-1-kp"
 
 // Database
-
+db_name               = ""
+db_password           = ""
+db_username           = ""
 db_port               = 5432
 db_snapshot_migration = "terraform-migration-1"
 

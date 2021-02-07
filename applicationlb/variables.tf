@@ -2,6 +2,10 @@ locals {
   envname = "${var.project_name}-${var.environment}"
 }
 
+// --------------------------
+// General Variables
+// --------------------------
+
 variable "account_id" {
   type        = number
   description = "AWS Account ID"
@@ -29,6 +33,10 @@ variable "tags" {
   default = { terraform_managed = "true" }
   type    = map(any)
 }
+
+// --------------------------
+// Application Load Balancer Variables
+// --------------------------
 
 variable "public_subnet_ids" {
   type        = list(string)

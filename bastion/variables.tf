@@ -48,7 +48,7 @@ variable "key_name" {
 }
 
 // --------------------------
-// User_Data.sh Variables
+// user_data.sh Variables
 // --------------------------
 variable "ssh_user" {
   default = "ubuntu"

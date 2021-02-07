@@ -1,35 +1,34 @@
 locals {
   envname                = "${var.project_name}-${var.environment}"
-  ecs_service_name       = "${local.envname}-service"
-  task_definition_family = "${local.envname}-td"
-  task_name              = "${local.envname}-task"
-  container_name         = "${local.envname}-container"
+  ecs_service_name       = "${var.project_name}-${var.environment}-service"
+  task_definition_family = "${var.project_name}-${var.environment}-td"
+  task_name              = "${var.project_name}-${var.environment}-task"
+  container_name         = "${var.project_name}-${var.environment}-container"
 }
-
 // --------------------------
 // Global/General Variables
 // --------------------------
 variable "account_id" {
+  type        = number
   description = "AWS Account ID"
 }
 
 variable "project_name" {
+  type        = string
   description = "The overall name of the project using this infrastructure; used to group related resources by"
 }
 
 variable "region" {
-  type = string
+  type    = string
+  default = "us-east-2"
 }
 
 variable "environment" {
   type = string
 }
 
-variable "host_name" {
-  type = string
-}
-
 variable "vpc_id" {
+  type        = string
   description = "VPC ID"
 }
 
@@ -51,13 +50,8 @@ variable "cluster_name" {
 }
 
 // --------------------------
-// Application Load Balancer
+// Applicaton Load Balancer
 // --------------------------
-
-variable "health_check_path" {
-  type    = string
-  default = "/"
-}
 
 variable "alb_target_group_arn" {
   description = "ALB Target group for where to place task definitions"
@@ -67,22 +61,31 @@ variable "alb_https_listener_arn" {
   description = "ALB https listener arn for adding rule to"
 }
 
-// --------------------------
-// Container Definition Variables
-// --------------------------
+variable "health_check_path" {
+  type        = string
+  description = "ALB Target Group Health Check"
+  default     = "/"
+}
 
+variable "host_name" {
+  type = string
+}
+
+variable "url_path" {
+  type = string
+}
+
+// --------------------------
+// Container
+// --------------------------
 variable "desired_count" {
   default = 1
   type    = number
 }
 
-variable "container_image" {
-  type = string
-}
-
 variable "container_cpu" {
   type    = number
-  default = 0
+  default = 256
 }
 
 variable "container_memory" {
@@ -92,7 +95,11 @@ variable "container_memory" {
 
 variable "container_port" {
   type    = number
-  default = 80
+  default = 0
+}
+
+variable "container_image" {
+  type = string
 }
 
 variable "container_env_vars" {

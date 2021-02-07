@@ -38,22 +38,8 @@ variable "tags" {
 }
 
 // --------------------------
-// ECS/Fargat Variables
+// ECS Cluster
 // --------------------------
-variable "container_cpu" {
-  type    = number
-  default = 256
-}
-
-variable "container_memory" {
-  type    = number
-  default = 0
-}
-
-variable "container_port" {
-  type    = number
-  default = 0
-}
 
 variable "cluster_id" {
   type = string
@@ -63,22 +49,22 @@ variable "cluster_name" {
   type = string
 }
 
-variable "container_image" {
-  type = string
+// --------------------------
+// Applicaton Load Balancer
+// --------------------------
+
+variable "alb_target_group_arn" {
+  description = "ALB Target group for where to place task definitions"
 }
 
-variable "desired_count" {
-  default = 1
-  type    = number
+variable "alb_https_listener_arn" {
+  description = "ALB https listener arn for adding rule to"
 }
 
-variable "container_env_vars" {
-  type = list(map(string))
-}
-
-variable "public_subnet_ids" {
-  description = "VPC Public Subnets for where to place Fargate tasks"
-  type        = list(string)
+variable "health_check_path" {
+  type        = string
+  description = "ALB Target Group Health Check"
+  default     = "/"
 }
 
 variable "private_dns_id" {
@@ -97,16 +83,33 @@ variable "url_path" {
   type = string
 }
 
-variable "alb_target_group_arn" {
-  description = "ALB Target group for where to place task definitions"
+// --------------------------
+// Container
+// --------------------------
+variable "desired_count" {
+  default = 1
+  type    = number
 }
 
-variable "alb_https_listener_arn" {
-  description = "ALB https listener arn for adding rule to"
+variable "container_cpu" {
+  type    = number
+  default = 256
 }
 
-variable "health_check_path" {
-  type        = string
-  description = "ALB Target Group Health Check"
-  default     = "/"
+variable "container_memory" {
+  type    = number
+  default = 0
+}
+
+variable "container_port" {
+  type    = number
+  default = 0
+}
+
+variable "container_image" {
+  type = string
+}
+
+variable "container_env_vars" {
+  type = list(map(string))
 }
