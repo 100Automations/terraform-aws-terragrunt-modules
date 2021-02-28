@@ -36,20 +36,14 @@ variable "full_stack_health_check_path" {
 
 variable "full_stack_container_env_vars" {
   type = map(string)
-  // default = [
-  //   {
-  //     "name": "NODE_ENV",
-  //     "value": "production"
-  //   }
-  // ]
+  default = { 
+    "foo": "bar"
+  }
 }
 
 variable "full_stack_container_env_secrets" {
   type = map(string)
-  // default = [
-  //   {
-  //     "name": "NODE_ENV",
-  //     "value": "production"
-  //   }
-  // ]
+  default = { 
+    "foo": "bar"
+  }
 }
