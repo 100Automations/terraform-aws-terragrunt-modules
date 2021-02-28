@@ -1,22 +1,41 @@
+locals {
+  env_vars = [
+    for k, v in var.container_env_vars: {
+      "name": k,
+      "value": v
+    }
+  ]
+  ssm_secrets = [
+    for k, v in var.container_env_secrets: {
+      "name": k,
+      "valueFrom": "arn:aws:ssm:${var.region}:${var.account_id}:parameter/${var.project_name}/${var.environment}/${k}"
+    }
+  ]
+}
+
 resource "aws_ecs_task_definition" "task" {
   family = local.task_definition_family
 
   container_definitions = templatefile(
     "${path.module}/templates/container-definition.json",
     {
-      container_memory   = var.container_memory == 0 ? 128 : var.container_memory
-      container_cpu      = var.container_cpu
-      container_port     = var.container_port
-      container_name     = local.container_name
-      image              = var.container_image
-      container_env_vars = jsonencode(var.container_env_vars)
+      container_memory      = var.container_memory == 0 ? 128 : var.container_memory
+      container_cpu         = var.container_cpu
+      container_port        = var.container_port
+      container_name        = local.container_name
+      image                 = var.container_image
+      container_env_vars    = jsonencode(local.env_vars)
+      container_env_secrets = jsonencode(local.ssm_secrets)
     }
   )
 
   requires_compatibilities = ["EC2"]
   network_mode             = "bridge"
+  execution_role_arn       = "arn:aws:iam::470363915259:role/foodoasis_task_execution" #must be pre-created
   memory                   = var.container_memory == 0 ? null : var.container_memory
   cpu                      = var.container_cpu == 0 ? null : var.container_cpu
+
+  depends_on = [aws_ssm_parameter.env_secrets]
 }
 
 resource "aws_ecs_service" "svc" {
@@ -41,10 +60,14 @@ resource "aws_lb_target_group" "this" {
   protocol             = "HTTP"
   vpc_id               = var.vpc_id
   deregistration_delay = 90
+  stickiness {
+    type = "lb_cookie"
+  }
   health_check {
     interval            = 15
     healthy_threshold   = 3
     unhealthy_threshold = 2
+    matcher             = "200,302"
   }
 }
 

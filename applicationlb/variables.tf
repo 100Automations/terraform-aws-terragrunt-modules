@@ -47,3 +47,8 @@ variable "acm_certificate_arn" {
   type        = string
   description = "Certificate to use for HTTPS listener"
 }
+
+variable "default_alb_url" {
+  type = string
+  description = "Default URL to forward the user if there is no ALB route rules that match"
+}

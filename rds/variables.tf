@@ -68,8 +68,8 @@ variable "db_instance_class" {
   default     = "db.t3.medium"
 }
 variable "db_engine_version" {
-  description = "the database major and minor version of postgres; default to 11.8"
-  default     = "11.8"
+  description = "the database major and minor version of postgres; default to 11.10"
+  default     = "11.10"
 }
 variable "db_allow_major_engine_version_upgrade" {
   default = true

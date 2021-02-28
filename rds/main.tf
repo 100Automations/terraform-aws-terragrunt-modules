@@ -34,7 +34,6 @@ module "db" {
   instance_class              = var.db_instance_class
   allocated_storage           = 100
 
-  name     = var.db_name
   username = var.db_username
   password = var.db_password
   port     = var.db_port
@@ -46,7 +45,6 @@ module "db" {
   maintenance_window = "Mon:00:00-Mon:03:00"
   backup_window      = "03:00-06:00"
 
-  # disable backups to create DB faster
   backup_retention_period = 0
 
   tags = var.tags

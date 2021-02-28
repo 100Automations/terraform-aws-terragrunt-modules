@@ -70,15 +70,17 @@ module "applicationlb" {
   region       = var.region
   environment  = var.environment
   project_name = var.project_name
+  default_alb_url = var.default_alb_url
 
   tags = var.tags
 }
 
 module "ecs" {
-  source = "./ecs-ec2"
+  source = "./ecs"
 
   // Input from other Modules
   vpc_id                = module.network.vpc_id
+  vpc_cidr              = module.network.vpc_cidr
   public_subnet_ids     = module.network.public_subnet_ids
   alb_security_group_id = module.applicationlb.security_group_id
 

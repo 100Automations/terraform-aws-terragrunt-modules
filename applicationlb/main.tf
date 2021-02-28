@@ -65,7 +65,7 @@ resource "aws_lb_listener" "ssl" {
     type = "redirect"
 
     redirect {
-      host        = "www.codeforsanjose.org"
+      host        = var.default_alb_url
       path        = "/"
       query       = ""
       port        = "443"

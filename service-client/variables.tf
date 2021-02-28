@@ -59,10 +59,6 @@ variable "health_check_path" {
   default = "/"
 }
 
-variable "alb_target_group_arn" {
-  description = "ALB Target group for where to place task definitions"
-}
-
 variable "alb_https_listener_arn" {
   description = "ALB https listener arn for adding rule to"
 }
@@ -96,5 +92,9 @@ variable "container_port" {
 }
 
 variable "container_env_vars" {
-  type = list(map(string))
+  type = map(string)
+}
+
+variable "container_env_secrets" {
+  type = map(string)
 }

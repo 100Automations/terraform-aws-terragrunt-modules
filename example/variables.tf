@@ -6,11 +6,6 @@ variable "account_id" {
   description = "AWS Account ID"
 }
 
-variable "namespace" {
-  type        = string
-  description = "Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp'"
-}
-
 variable "region" {
   type = string
 }
@@ -56,37 +51,20 @@ variable "vpc_cidr" {
   description = "The range of IP addresses this vpc will reside in"
 }
 
+// --------------------------
+// ECS/Fargat Variables
+// --------------------------
+variable "default_alb_url" {
+  type = string
+  description = "Default URL to forward the user if there is no ALB route rules that match"
+}
 
 // --------------------------
 // ECS/Fargat Variables
 // --------------------------
-variable "container_cpu" {
+variable "ecs_ec2_instance_count" {
   type    = number
-  default = 256
-}
-
-variable "container_memory" {
-  type    = number
-  default = 512
-}
-
-variable "container_port" {
-  type = number
-}
-
-variable "health_check_path" {
-  type    = string
-  default = "/health"
-}
-
-variable "image_tag" {
-  description = "tag to be used for elastic container repositry image"
-  default     = "latest"
-}
-
-variable "desired_count" {
-  default = 1
-  type    = number
+  default = 0
 }
 
 // --------------------------
