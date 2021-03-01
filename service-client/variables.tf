@@ -25,8 +25,8 @@ variable "environment" {
   type = string
 }
 
-variable "host_name" {
-  type = string
+variable "host_names" {
+  type = list(string)
 }
 
 variable "vpc_id" {

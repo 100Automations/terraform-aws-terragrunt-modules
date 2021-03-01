@@ -52,6 +52,9 @@ resource "aws_ecs_service" "svc" {
   }
 
   depends_on = [aws_lb_target_group.this, aws_lb_listener_rule.static]
+  lifecycle {
+    ignore_changes = [task_definition]
+  }
 }
 
 resource "aws_lb_target_group" "this" {
@@ -81,7 +84,7 @@ resource "aws_lb_listener_rule" "static" {
 
   condition {
     host_header {
-      values = [var.host_name]
+      values = var.host_names
     }
   }
 
