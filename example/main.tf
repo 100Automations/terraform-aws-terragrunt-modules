@@ -59,7 +59,7 @@ module "full-stack" {
   project_name = var.project_name
   environment  = var.environment
   region       = var.region
-  host_name    = var.host_name
+  host_names    = var.full_stack_host_names
   tags         = var.tags
 
   // Container Variables

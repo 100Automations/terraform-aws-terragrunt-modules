@@ -1,9 +1,9 @@
 // --------------------------
 // Container Variables
 // --------------------------
-variable "host_name" {
-  type = string
-  description = "The URL the application will be deployed"
+variable "full_stack_host_names" {
+  type = list(string)
+  description = "The URLs the application will be deployed"
 }
 
 variable "full_stack_desired_count" {
