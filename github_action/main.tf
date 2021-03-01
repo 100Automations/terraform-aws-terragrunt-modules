@@ -24,7 +24,8 @@ resource "aws_iam_user_policy" "gha_policy" {
             ],
             "Resource": [
                 "arn:aws:iam::${var.account_id}:role/ecsServiceRole",
-                "arn:aws:iam::${var.account_id}:role/ecsTaskExecutionRole"
+                "arn:aws:iam::${var.account_id}:role/ecsTaskExecutionRole",
+                "arn:aws:iam::${var.account_id}:role/foodoasis_task_execution"
             ]
         },
         {
