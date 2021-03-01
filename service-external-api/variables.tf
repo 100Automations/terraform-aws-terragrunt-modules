@@ -90,12 +90,12 @@ variable "container_cpu" {
 
 variable "container_memory" {
   type    = number
-  default = 0
+  default = 256
 }
 
 variable "container_port" {
   type    = number
-  default = 0
+  default = 8080
 }
 
 variable "container_image" {
