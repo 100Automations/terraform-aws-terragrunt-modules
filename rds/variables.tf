@@ -65,7 +65,7 @@ variable "db_port" {
 
 variable "db_instance_class" {
   description = "The instance type of the db; defaults to db.t2.small"
-  default     = "db.t3.medium"
+  default     = "db.t3.small"
 }
 variable "db_engine_version" {
   description = "the database major and minor version of postgres; default to 11.10"
