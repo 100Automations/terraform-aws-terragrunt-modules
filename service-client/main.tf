@@ -1,14 +1,14 @@
 locals {
   env_vars = [
-    for k, v in var.container_env_vars: {
-      "name": k,
-      "value": v
+    for k, v in var.container_env_vars : {
+      "name" : k,
+      "value" : v
     }
   ]
   ssm_secrets = [
-    for k, v in var.container_env_secrets: {
-      "name": k,
-      "valueFrom": "arn:aws:ssm:${var.region}:${var.account_id}:parameter/${var.project_name}/${var.environment}/${k}"
+    for k, v in var.container_env_secrets : {
+      "name" : k,
+      "valueFrom" : "arn:aws:ssm:${var.region}:${var.account_id}:parameter/${var.project_name}/${var.environment}/${k}"
     }
   ]
 }

@@ -59,18 +59,18 @@ module "full-stack" {
   project_name = var.project_name
   environment  = var.environment
   region       = var.region
-  host_names    = var.full_stack_host_names
+  host_names   = var.full_stack_host_names
   tags         = var.tags
 
   // Container Variables
-  desired_count      = var.full_stack_desired_count
-  container_image    = var.full_stack_container_image
-  container_cpu      = var.full_stack_container_cpu
-  container_memory   = var.full_stack_container_memory
-  container_port     = var.full_stack_container_port
-  container_env_vars = var.full_stack_container_env_vars
+  desired_count         = var.full_stack_desired_count
+  container_image       = var.full_stack_container_image
+  container_cpu         = var.full_stack_container_cpu
+  container_memory      = var.full_stack_container_memory
+  container_port        = var.full_stack_container_port
+  container_env_vars    = var.full_stack_container_env_vars
   container_env_secrets = var.full_stack_container_env_secrets
-  health_check_path  = var.full_stack_health_check_path
+  health_check_path     = var.full_stack_health_check_path
 
   // Input from module
   vpc_id                 = module.terraform-aws-terragrunt-modules.vpc_id

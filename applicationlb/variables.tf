@@ -49,6 +49,6 @@ variable "acm_certificate_arn" {
 }
 
 variable "default_alb_url" {
-  type = string
+  type        = string
   description = "Default URL to forward the user if there is no ALB route rules that match"
 }

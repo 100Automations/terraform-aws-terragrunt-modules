@@ -2,7 +2,7 @@
 // Container Variables
 // --------------------------
 variable "full_stack_host_names" {
-  type = list(string)
+  type        = list(string)
   description = "The URLs the application will be deployed"
 }
 
@@ -12,7 +12,7 @@ variable "full_stack_desired_count" {
 
 variable "full_stack_container_image" {
   description = "tag to be used for elastic container repositry image"
-  type = string
+  type        = string
 }
 
 variable "full_stack_container_cpu" {
@@ -30,20 +30,20 @@ variable "full_stack_container_port" {
 }
 
 variable "full_stack_health_check_path" {
-  type = string
+  type    = string
   default = "/"
 }
 
 variable "full_stack_container_env_vars" {
   type = map(string)
-  default = { 
-    "foo": "bar"
+  default = {
+    "foo" : "bar"
   }
 }
 
 variable "full_stack_container_env_secrets" {
   type = map(string)
-  default = { 
-    "foo": "bar"
+  default = {
+    "foo" : "bar"
   }
 }

@@ -66,10 +66,10 @@ module "applicationlb" {
   acm_certificate_arn = module.acm.acm_certificate_arn
 
   // Input from Variables
-  account_id   = var.account_id
-  region       = var.region
-  environment  = var.environment
-  project_name = var.project_name
+  account_id      = var.account_id
+  region          = var.region
+  environment     = var.environment
+  project_name    = var.project_name
   default_alb_url = var.default_alb_url
 
   tags = var.tags

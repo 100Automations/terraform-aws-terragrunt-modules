@@ -55,7 +55,7 @@ variable "vpc_cidr" {
 // ECS/Fargat Variables
 // --------------------------
 variable "default_alb_url" {
-  type = string
+  type        = string
   description = "Default URL to forward the user if there is no ALB route rules that match"
 }
 
@@ -66,35 +66,6 @@ variable "ecs_ec2_instance_count" {
   type    = number
   default = 1
 }
-
-// variable "container_cpu" {
-//   type    = number
-//   default = 256
-// }
-
-// variable "container_memory" {
-//   type    = number
-//   default = 512
-// }
-
-// variable "container_port" {
-//   type = number
-// }
-
-// variable "health_check_path" {
-//   type    = string
-//   default = "/health"
-// }
-
-// variable "image_tag" {
-//   description = "tag to be used for elastic container repositry image"
-//   default     = "latest"
-// }
-
-// variable "desired_count" {
-//   default = 1
-//   type    = number
-// }
 
 // --------------------------
 // RDS/Database Variables
