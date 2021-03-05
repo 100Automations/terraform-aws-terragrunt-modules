@@ -42,7 +42,6 @@ variable "key_name" {
 variable "bastion_hostname" {
   type        = string
   description = "The hostname bastion, must be a subdomain of the domain_name"
-  default     = "bastion.foodoasis.net"
 }
 
 variable "vpc_cidr" {
@@ -91,7 +90,6 @@ variable "db_port" {
 variable "db_snapshot_migration" {
   type        = string
   description = "Name of snapshot that will used to for new database, must be the same region as var.region"
-  default     = ""
 }
 
 // --------------------------
