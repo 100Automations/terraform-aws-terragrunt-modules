@@ -30,7 +30,6 @@ variable "tags" {
 // --------------------------
 // Bastion Instance Variables
 // --------------------------
-
 variable "bastion_instance_type" {
   description = "The ec2 instance type of the bastion server"
   default     = "t2.micro"

@@ -12,7 +12,6 @@
       }
     ],
     "essential": true,
-    "environment": ${container_env_vars},
-    "secrets": ${container_env_secrets}
+    "environment": ${container_env_vars}
   }
 ]

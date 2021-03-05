@@ -94,7 +94,3 @@ variable "container_port" {
 variable "container_env_vars" {
   type = map(string)
 }
-
-variable "container_env_secrets" {
-  type = map(string)
-}

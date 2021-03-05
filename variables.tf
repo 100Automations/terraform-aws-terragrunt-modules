@@ -42,7 +42,6 @@ variable "key_name" {
 variable "bastion_hostname" {
   type        = string
   description = "The hostname bastion, must be a subdomain of the domain_name"
-  default     = "bastion.foodoasis.net"
 }
 
 variable "vpc_cidr" {

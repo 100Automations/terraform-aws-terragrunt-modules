@@ -13,25 +13,10 @@ resource "aws_route53_record" "www" {
   records = [var.alb_external_dns]
 }
 
-// TODO: Create A record for bastion server
-// resource "aws_route53_record" "www" {
-
-//   zone_id = data.aws_route53_zone.selected.zone_id
-//   name    = var.bastion_hostname
-//   type    = "CNAME"
-//   ttl     = "300"
-//   records = [var.bastion_public_ip]
-// }
-
-
-// Can link DNS Record to ALB via Alias, however not required
-// resource "aws_route53_record" "www" {
-//   zone_id = "${data.aws_route53_zone.selected.zone_id}"
-//   name    = "${var.domain_name}"
-//   type    = "A"
-//   alias {
-//     name                   = "${aws_lb.my-test-lb.dns_name}"
-//     zone_id                = "${aws_lb.my-test-lb.zone_id}"
-//     evaluate_target_health = false
-//   }
-// }
+resource "aws_route53_record" "bastion" {
+  zone_id = data.aws_route53_zone.selected.zone_id
+  name    = var.bastion_hostname
+  type    = "A"
+  ttl     = "300"
+  records = [var.bastion_public_ip]
+}
