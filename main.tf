@@ -49,7 +49,6 @@ module "rds" {
   region       = var.region
 
   db_username           = var.db_username
-  db_name               = var.db_name
   db_password           = var.db_password
   db_port               = var.db_port
   db_snapshot_migration = var.db_snapshot_migration

@@ -50,7 +50,7 @@ module "asg" {
 
   image_id             = data.aws_ami.amazon_linux_ecs.id
   key_name             = var.key_name
-  instance_type        = "t3.small"
+  instance_type        = var.ecs_ec2_instance_type
   security_groups      = [aws_security_group.ecs_instance.id]
   iam_instance_profile = "ecsInstanceRole"
   user_data            = data.template_file.user_data.rendered

@@ -69,10 +69,6 @@ variable "ecs_ec2_instance_count" {
 // --------------------------
 // RDS/Database Variables
 // --------------------------
-variable "db_name" {
-  type        = string
-  description = "Name of the Database"
-}
 variable "db_username" {
   type        = string
   description = "Databse Username"

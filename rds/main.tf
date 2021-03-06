@@ -1,6 +1,6 @@
 resource "aws_security_group" "db" {
   name        = "${var.project_name}-${var.environment}-database"
-  description = "Ingress and egress for ${var.db_name} RDS"
+  description = "Ingress and egress for ${var.project_name}-${var.environment} RDS"
   vpc_id      = var.vpc_id
   tags        = merge({ Name = "${var.project_name}-${var.environment}-database" }, var.tags)
 
@@ -42,6 +42,7 @@ module "db" {
 
   vpc_security_group_ids = [aws_security_group.db.id]
 
+  storage_encrypted = true
   maintenance_window = "Mon:00:00-Mon:03:00"
   backup_window      = "03:00-06:00"
 

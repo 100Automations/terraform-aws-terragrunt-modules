@@ -48,11 +48,6 @@ variable "db_username" {
   description = "The name of the default postgres user created by RDS when the instance is booted"
 }
 
-variable "db_name" {
-  type        = string
-  description = "The name of the default postgres database created by RDS when the instance is booted"
-}
-
 variable "db_password" {
   type        = string
   description = "The postgres database password created for the default database when the instance is booted"

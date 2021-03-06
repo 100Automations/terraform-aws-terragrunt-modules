@@ -44,7 +44,6 @@ module "terraform-aws-terragrunt-modules" {
   key_name               = var.key_name
 
   // Database
-  db_name               = var.db_name
   db_password           = var.db_password
   db_username           = var.db_username
   db_port               = var.db_port

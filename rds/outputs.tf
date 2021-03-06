@@ -16,13 +16,3 @@ output "db_security_group_id" {
   description = "The security group id for this RDS instance"
   value       = aws_security_group.db.id
 }
-
-output "aws_ssm_db_hostname_arn" {
-  description = "AWS SSM Paramater Store ARN for DB Hostname"
-  value       = aws_ssm_parameter.db_hostname.arn
-}
-
-output "aws_ssm_db_password_arn" {
-  description = "AWS SSM Paramater Store ARN for DB Password"
-  value       = aws_ssm_parameter.db_password.arn
-}
