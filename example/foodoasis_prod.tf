@@ -12,7 +12,7 @@ module "full-stack" {
   # URLs that will route the this application
   # Useful if there is a front-end vs backend or multiple applications within the same infrastrucutre
   host_names         = ["aws-test-la.foodoasis.net", "aws-test-hi.foodoasis.net", "aws-test-ca.foodoasis.net"]
-  execution_role_arn = "arn:aws:iam::470363915259:role/foodoasis_task_execution"
+  execution_role_arn = var.execution_role_arn
   // Container Variables
   launch_type       = "FARGATE"
   desired_count     = 3
