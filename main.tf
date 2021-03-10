@@ -98,12 +98,12 @@ module "r53" {
   source = "./r53"
 
   // Input from other Modules
-  alb_external_dns = module.applicationlb.lb_dns_name
+  alb_external_dns  = module.applicationlb.lb_dns_name
   bastion_public_ip = module.bastion.public_ip
 
   // Input from Variables
-  domain_name = var.domain_name
-  host_names  = var.host_names
+  domain_name      = var.domain_name
+  host_names       = var.host_names
   bastion_hostname = var.bastion_hostname
 }
 

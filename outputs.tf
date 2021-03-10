@@ -2,6 +2,10 @@ output "vpc_id" {
   value = module.network.vpc_id
 }
 
+output "public_subnet_ids" {
+  value = module.network.public_subnet_ids
+}
+
 output "cluster_id" {
   value = module.ecs.cluster_id
 }
@@ -12,6 +16,10 @@ output "cluster_name" {
 
 output "alb_https_listener_arn" {
   value = module.applicationlb.alb_https_listener_arn
+}
+
+output "alb_security_group_id" {
+  value = module.applicationlb.security_group_id
 }
 
 // Github Actions AWS Credentials

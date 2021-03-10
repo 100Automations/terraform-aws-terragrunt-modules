@@ -30,8 +30,8 @@ module "terraform-aws-terragrunt-modules" {
   region       = var.region
 
   // DNS
-  domain_name = var.domain_name
-  host_names  = var.host_names
+  domain_name      = var.domain_name
+  host_names       = var.host_names
   bastion_hostname = var.bastion_hostname
 
   tags = var.tags

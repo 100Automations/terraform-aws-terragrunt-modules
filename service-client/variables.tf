@@ -33,6 +33,16 @@ variable "vpc_id" {
   description = "VPC ID"
 }
 
+variable "vpc_cidr" {
+  type        = string
+  description = "VPC cidr block"
+}
+
+variable "public_subnet_ids" {
+  description = "Public Subnets IDs"
+  type        = list(string)
+}
+
 variable "tags" {
   default = { terraform_managed = "true" }
   type    = map(any)
@@ -63,6 +73,10 @@ variable "alb_https_listener_arn" {
   description = "ALB https listener arn for adding rule to"
 }
 
+variable "alb_security_group_id" {
+  description = "ALB Security Group ID"
+  type        = string
+}
 // --------------------------
 // Container Definition Variables
 // --------------------------
@@ -70,6 +84,17 @@ variable "alb_https_listener_arn" {
 variable "desired_count" {
   default = 1
   type    = number
+}
+
+variable "launch_type" {
+  default     = "FARGATE"
+  type        = string
+  description = "How to launch the container within ECS EC2 instance or FARGATE"
+}
+
+variable "execution_role_arn" {
+  type        = string
+  description = "Pre-created ECS task execution role with policy for accessing other AWS resources"
 }
 
 variable "container_image" {
