@@ -30,3 +30,7 @@ output "access_key_id" {
 output "secret_access_key_id" {
   value = module.github_action.secret_access_key_id
 }
+
+output "task_execution_role_arn" {
+  value = module.ecs.task_execution_role_arn
+}

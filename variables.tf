@@ -66,11 +66,6 @@ variable "ecs_ec2_instance_count" {
   default = 1
 }
 
-variable "execution_role_arn" {
-  type        = string
-  description = "Pre-created ECS task execution role with policy for accessing other AWS resources"
-}
-
 // --------------------------
 // RDS/Database Variables
 // --------------------------

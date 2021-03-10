@@ -12,8 +12,8 @@ module "full-stack" {
   # URLs that will route the this application
   # Useful if there is a front-end vs backend or multiple applications within the same infrastrucutre
   host_names         = ["aws-test-la.foodoasis.net", "aws-test-hi.foodoasis.net", "aws-test-ca.foodoasis.net"]
-  execution_role_arn = var.execution_role_arn
   // Container Variables
+  application_type = "fullstack"
   launch_type       = "FARGATE"
   desired_count     = 3
   container_image   = "foodoasisla/foodoasisla:1.0.44"
@@ -32,6 +32,7 @@ module "full-stack" {
   cluster_name           = module.terraform-aws-terragrunt-modules.cluster_name
   alb_https_listener_arn = module.terraform-aws-terragrunt-modules.alb_https_listener_arn
   alb_security_group_id  = module.terraform-aws-terragrunt-modules.alb_security_group_id
+  task_execution_role_arn = module.terraform-aws-terragrunt-modules.task_execution_role_arn
 }
 
 variable "foodoasis_prod_env_vars" {

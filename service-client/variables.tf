@@ -25,6 +25,10 @@ variable "environment" {
   type = string
 }
 
+variable "application_type" {
+  type = string
+  description = "defines what type of application is running, fullstack, client, backend, etc. will be used for cloudwatch logs"
+}
 variable "host_names" {
   type = list(string)
 }
@@ -92,9 +96,9 @@ variable "launch_type" {
   description = "How to launch the container within ECS EC2 instance or FARGATE"
 }
 
-variable "execution_role_arn" {
+variable "task_execution_role_arn" {
   type        = string
-  description = "Pre-created ECS task execution role with policy for accessing other AWS resources"
+  description = "ECS task execution role with policy for accessing other AWS resources"
 }
 
 variable "container_image" {

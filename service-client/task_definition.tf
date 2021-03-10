@@ -24,6 +24,9 @@ resource "aws_ecs_task_definition" "task" {
   container_definitions = templatefile(
     "${path.module}/templates/task-definition.json",
     {
+      envapp = local.envname
+      region = var.region
+      application_type = var.application_type
       host_port          = local.host_port
       container_memory   = local.container_memory
       container_cpu      = var.container_cpu
@@ -36,7 +39,7 @@ resource "aws_ecs_task_definition" "task" {
 
   requires_compatibilities = ["EC2", "FARGATE"]
   network_mode             = local.task_network_mode
-  execution_role_arn       = var.execution_role_arn
+  execution_role_arn       = var.task_execution_role_arn
   memory                   = local.task_memory
   cpu                      = local.task_cpu
 }

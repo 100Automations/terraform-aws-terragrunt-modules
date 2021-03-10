@@ -28,7 +28,6 @@ module "terraform-aws-terragrunt-modules" {
   project_name       = var.project_name
   environment        = var.environment
   region             = var.region
-  execution_role_arn = var.execution_role_arn
 
   // DNS
   domain_name      = var.domain_name

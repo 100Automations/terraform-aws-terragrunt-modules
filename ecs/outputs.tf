@@ -13,3 +13,7 @@ output "ecs_asg_arn" {
 output "asg_capacity_prov" {
   value = aws_ecs_capacity_provider.prov1.name
 }
+
+output "task_execution_role_arn" {
+  value = aws_iam_role.ecs_task_execution_role.arn
+}

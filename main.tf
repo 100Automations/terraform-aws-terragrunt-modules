@@ -139,6 +139,6 @@ module "github_action" {
   source = "./github_action"
 
   account_id         = var.account_id
-  execution_role_arn = var.execution_role_arn
+  execution_role_arn = module.ecs.task_execution_role_arn
   tags               = var.tags
 }
