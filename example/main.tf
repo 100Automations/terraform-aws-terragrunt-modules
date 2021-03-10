@@ -24,11 +24,11 @@ module "terraform-aws-terragrunt-modules" {
   source = "../"
 
   // General
-  account_id   = var.account_id
-  project_name = var.project_name
-  environment  = var.environment
-  region       = var.region
-  var.execution_role_arn = var.execution_role_arn
+  account_id         = var.account_id
+  project_name       = var.project_name
+  environment        = var.environment
+  region             = var.region
+  execution_role_arn = var.execution_role_arn
 
   // DNS
   domain_name      = var.domain_name

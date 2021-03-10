@@ -51,7 +51,7 @@ variable "vpc_cidr" {
 }
 
 // --------------------------
-// ECS/Fargat Variables
+// ALB Varialbes
 // --------------------------
 variable "default_alb_url" {
   type        = string
@@ -64,6 +64,11 @@ variable "default_alb_url" {
 variable "ecs_ec2_instance_count" {
   type    = number
   default = 1
+}
+
+variable "execution_role_arn" {
+  type        = string
+  description = "Pre-created ECS task execution role with policy for accessing other AWS resources"
 }
 
 // --------------------------
