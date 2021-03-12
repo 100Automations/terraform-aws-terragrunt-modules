@@ -8,7 +8,7 @@ locals {
   ]
 }
 resource "aws_launch_configuration" "bastion" {
-  name_prefix       = "${local.envname}-"
+  name       = "${local.envname}-bastion"
   image_id          = data.aws_ami.ami.id
   instance_type     = var.bastion_instance_type
   user_data         = local.template_file_init

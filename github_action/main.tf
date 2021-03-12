@@ -45,6 +45,13 @@ resource "aws_iam_user_policy" "gha_policy" {
                 "ecr:CreateRepository"
             ],
             "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "autoscaling:UpdateAutoScalingGroup"
+            ],
+            "Resource": "*"
         }
     ]
 }
