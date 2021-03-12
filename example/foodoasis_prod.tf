@@ -16,7 +16,7 @@ module "full-stack" {
   application_type = "fullstack"
   launch_type       = "FARGATE"
   desired_count     = 3
-  container_image   = "foodoasisla/foodoasisla:1.0.44"
+  container_image   = "foodoasisla/foodoasisla:aws-deployment"
   container_cpu     = 0
   container_memory  = 256
   container_port    = 5000
