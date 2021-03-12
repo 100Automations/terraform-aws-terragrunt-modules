@@ -18,6 +18,11 @@ variable "environment" {
   type = string
 }
 
+variable "domain_name" {
+  type        = string
+  description = "The domain name where the application will be deployed, must already live in AWS"
+}
+
 variable "vpc_id" {
   description = "VPC ID"
 }
@@ -30,6 +35,11 @@ variable "tags" {
 // --------------------------
 // Bastion Instance Variables
 // --------------------------
+variable "bastion_hostname" {
+  type        = string
+  description = "The hostname bastion, must be a subdomain of the domain_name"
+}
+
 variable "bastion_instance_type" {
   description = "The ec2 instance type of the bastion server"
   default     = "t2.micro"

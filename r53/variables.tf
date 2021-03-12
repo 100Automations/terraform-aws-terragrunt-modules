@@ -12,13 +12,3 @@ variable "alb_external_dns" {
   description = "Application Load Balancer External A Record for R53 Record"
   type        = string
 }
-
-variable "bastion_public_ip" {
-  description = "Public IP of bastion server"
-  type        = string
-}
-
-variable "bastion_hostname" {
-  type        = string
-  description = "The hostname bastion, must be a subdomain of the domain_name"
-}

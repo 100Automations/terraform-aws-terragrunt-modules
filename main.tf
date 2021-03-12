@@ -99,12 +99,10 @@ module "r53" {
 
   // Input from other Modules
   alb_external_dns  = module.applicationlb.lb_dns_name
-  bastion_public_ip = module.bastion.public_ip
 
   // Input from Variables
   domain_name      = var.domain_name
   host_names       = var.host_names
-  bastion_hostname = var.bastion_hostname
 }
 
 module "bastion" {
@@ -118,6 +116,9 @@ module "bastion" {
   account_id   = var.account_id
   project_name = var.project_name
   environment  = var.environment
+  domain_name = var.domain_name
+  bastion_hostname = var.bastion_hostname
+  key_name = var.key_name
 
   bastion_instance_type    = var.bastion_instance_type
   cron_key_update_schedule = var.cron_key_update_schedule

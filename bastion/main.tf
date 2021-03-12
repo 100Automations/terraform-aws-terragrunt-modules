@@ -3,6 +3,8 @@ locals {
   subnet_id = element(var.public_subnet_ids, 1)
 
   template_file_init = templatefile("${path.module}/user_data.sh", {
+    domain_name = var.domain_name
+    bastion_hostname = var.bastion_hostname
     ssh_user                    = var.ssh_user,
     github_repo_owner           = var.bastion_github_file.github_repo_owner,
     github_repo_name            = var.bastion_github_file.github_repo_name,
@@ -12,22 +14,6 @@ locals {
     enable_hourly_cron_updates  = var.enable_hourly_cron_updates,
     additional_user_data_script = var.additional_user_data_script
   })
-}
-
-resource "aws_instance" "bastion" {
-  ami                         = data.aws_ami.ami.id
-  instance_type               = var.bastion_instance_type
-  associate_public_ip_address = false
-  subnet_id                   = local.subnet_id
-  vpc_security_group_ids      = [aws_security_group.bastion.id]
-  user_data                   = local.template_file_init
-  key_name                    = var.key_name
-
-  tags = merge(var.tags, { Name = "bastion-${local.envname}" })
-
-  lifecycle {
-    ignore_changes = [associate_public_ip_address]
-  }
 }
 
 // Pull latest Ubuntu AMI
@@ -55,13 +41,4 @@ data "aws_ami" "ami" {
     name   = "root-device-type"
     values = ["ebs"]
   }
-}
-
-resource "aws_eip" "eip" {
-  vpc = true
-}
-
-resource "aws_eip_association" "eip_assoc" {
-  instance_id   = aws_instance.bastion.id
-  allocation_id = aws_eip.eip.id
 }
