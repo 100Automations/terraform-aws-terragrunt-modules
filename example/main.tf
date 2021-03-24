@@ -44,8 +44,11 @@ module "terraform-aws-terragrunt-modules" {
   key_name               = var.key_name
 
   // Database
+  create_db_instance = var.create_db_instance
   db_password           = var.db_password
   db_username           = var.db_username
   db_port               = var.db_port
+  db_engine_version = var.db_engine_version
+  db_major_version = var.db_major_version
   db_snapshot_migration = var.db_snapshot_migration
 }

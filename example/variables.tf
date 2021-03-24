@@ -27,11 +27,13 @@ variable "tags" {
 variable "domain_name" {
   type        = string
   description = "The domain name where the application will be deployed, must already live in AWS"
+  default = ""
 }
 
 variable "host_names" {
   description = "The URL where the application will be hosted, must be a subdomain of the domain_name"
   type        = list(string)
+  default = [""]
 }
 
 variable "key_name" {
@@ -69,10 +71,17 @@ variable "ecs_ec2_instance_count" {
 // --------------------------
 // RDS/Database Variables
 // --------------------------
+variable "create_db_instance" {
+  type        = string
+  description = "Flag to create DB Instace"
+  default = "false"
+}
+
 variable "db_username" {
   type        = string
   description = "Databse Username"
 }
+
 variable "db_password" {
   type        = string
   description = "Databse Password"
@@ -81,6 +90,15 @@ variable "db_password" {
 variable "db_port" {
   type        = number
   description = "Databse Port"
+  default = 5432
+}
+
+variable "db_engine_version" {
+  description = "the database major and minor version of postgres"
+}
+
+variable "db_major_version" {
+  description = "the database major version for postgres"
 }
 
 variable "db_snapshot_migration" {
@@ -97,18 +115,7 @@ variable "bastion_instance_type" {
   default     = "t2.micro"
 }
 
-variable "cron_key_update_schedule" {
-  default     = "5,0,*,* * * * *"
-  description = "The cron schedule that public keys are synced from the bastion s3 bucket to the server; default to once every hour"
-}
-
 variable "bastion_github_file" {
   description = "the file located in Github for where the allowed github users will live"
   type        = map(any)
-  default = {
-    github_repo_owner = "codeforsanjose",
-    github_repo_name  = "Infrastructure",
-    github_branch     = "main",
-    github_filepath   = "bastion_github_users",
-  }
 }

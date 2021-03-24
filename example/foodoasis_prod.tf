@@ -8,6 +8,16 @@ module "full-stack" {
   region       = var.region
   vpc_cidr     = var.vpc_cidr
   tags         = var.tags
+  
+  // Input from shared this module
+  vpc_id                 = module.terraform-aws-terragrunt-modules.vpc_id
+  public_subnet_ids      = module.terraform-aws-terragrunt-modules.public_subnet_ids
+  cluster_id             = module.terraform-aws-terragrunt-modules.cluster_id
+  cluster_name           = module.terraform-aws-terragrunt-modules.cluster_name
+  alb_https_listener_arn = module.terraform-aws-terragrunt-modules.alb_https_listener_arn
+  alb_security_group_id  = module.terraform-aws-terragrunt-modules.alb_security_group_id
+  task_execution_role_arn = module.terraform-aws-terragrunt-modules.task_execution_role_arn
+
 
   # URLs that will route the this application
   # Useful if there is a front-end vs backend or multiple applications within the same infrastrucutre
@@ -16,7 +26,7 @@ module "full-stack" {
   application_type = "fullstack"
   launch_type       = "FARGATE"
   desired_count     = 3
-  container_image   = "foodoasisla/foodoasisla:aws-deployment"
+  container_image   = "foodoasisla/foodoasisla:1.0.45"
   container_cpu     = 0
   container_memory  = 256
   container_port    = 5000
@@ -24,15 +34,6 @@ module "full-stack" {
 
   # Lives in a variable to keep it secret
   container_env_vars = var.foodoasis_prod_env_vars
-
-  // Input from module
-  vpc_id                 = module.terraform-aws-terragrunt-modules.vpc_id
-  public_subnet_ids      = module.terraform-aws-terragrunt-modules.public_subnet_ids
-  cluster_id             = module.terraform-aws-terragrunt-modules.cluster_id
-  cluster_name           = module.terraform-aws-terragrunt-modules.cluster_name
-  alb_https_listener_arn = module.terraform-aws-terragrunt-modules.alb_https_listener_arn
-  alb_security_group_id  = module.terraform-aws-terragrunt-modules.alb_security_group_id
-  task_execution_role_arn = module.terraform-aws-terragrunt-modules.task_execution_role_arn
 }
 
 variable "foodoasis_prod_env_vars" {

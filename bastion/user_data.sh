@@ -51,51 +51,43 @@ echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile && source  /etc/profile
 # -----------------------------
 # Setup Cron Job
 # -----------------------------
+croncmd="/home/ubuntu/create_ssh_user_authorized_keys.sh"
+cronjob="5,0,*,* * * * * $croncmd"
+( crontab -u root -l | grep -v "$croncmd" ; echo "$cronjob" ) | crontab -u root -
 
-# Be backwards compatible with old cron update enabler
-if [ "${enable_hourly_cron_updates}" = 'true' -a -z "${cron_key_update_schedule}" ]; then
-  cron_key_update_schedule="0 * * * *"
-else
-  cron_key_update_schedule="${cron_key_update_schedule}"
-fi
-
-# Add to cron
-if [ -n "$cron_key_update_schedule" ]; then
-  croncmd="/home/ubuntu/create_ssh_user_authorized_keys.sh"
-  cronjob="$cron_key_update_schedule $croncmd"
-  ( crontab -u root -l | grep -v "$croncmd" ; echo "$cronjob" ) | crontab -u root -
-fi
 
 # Disable password requirement for sudoers
 sed -i 's/sudo.*(ALL:ALL) ALL/sudo ALL=(ALL) NOPASSWD:ALL/' /etc/sudoers
 
 
 # Create New Record for Bastion
-snap install jq
-snap install aws-cli --classic
-hosted_zone_id=$(aws route53 list-hosted-zones \
-| jq --arg domain "${domain_name}." '.HostedZones[] | select(.Name==$domain) | .Id' \
-| cut -d'/' -f3 | sed 's/.$//')
+if [ "${bastion_hostname}" != "" ]; then
+  snap install jq
+  snap install aws-cli --classic
+  hosted_zone_id=$(aws route53 list-hosted-zones \
+  | jq --arg domain "${domain_name}." '.HostedZones[] | select(.Name==$domain) | .Id' \
+  | cut -d'/' -f3 | sed 's/.$//')
 
-bastion_public_ip=$(curl http://checkip.amazonaws.com)
+  bastion_public_ip=$(curl http://checkip.amazonaws.com)
 
-tee "/tmp/new_record.json" <<EOF
-{
-            "Comment": "",
-            "Changes": [{
-            "Action": "UPSERT",
-                        "ResourceRecordSet": {
-                                    "Name": "${bastion_hostname}",
-                                    "Type": "A",
-                                    "TTL": 300,
-                                 "ResourceRecords": [{ "Value": "$bastion_public_ip"}]
-}}]
-}
-EOF
+  tee "/tmp/new_record.json" <<EOF
+  {
+              "Comment": "",
+              "Changes": [{
+              "Action": "UPSERT",
+                          "ResourceRecordSet": {
+                                      "Name": "${bastion_hostname}",
+                                      "Type": "A",
+                                      "TTL": 300,
+                                  "ResourceRecords": [{ "Value": "$bastion_public_ip"}]
+  }}]
+  }
+  EOF
 
-aws route53 change-resource-record-sets \
---hosted-zone-id $hosted_zone_id \
---change-batch file:///tmp/new_record.json
+  aws route53 change-resource-record-sets \
+  --hosted-zone-id $hosted_zone_id \
+  --change-batch file:///tmp/new_record.json
+fi
 
 # Append addition user-data script
 ${additional_user_data_script}

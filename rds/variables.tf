@@ -43,6 +43,12 @@ variable "tags" {
 // --------------------------
 // Database Variables
 // --------------------------
+variable "create_db_instance" {
+  type        = string
+  description = "Flag to create DB Instace"
+  default = "false"
+}
+
 variable "db_username" {
   type        = string
   description = "The name of the default postgres user created by RDS when the instance is booted"
@@ -64,14 +70,14 @@ variable "db_instance_class" {
 }
 variable "db_engine_version" {
   description = "the database major and minor version of postgres; default to 11.10"
-  default     = "11.10"
+  default     = "12.5"
 }
 variable "db_allow_major_engine_version_upgrade" {
   default = true
 }
 
 variable "db_major_version" {
-  default = "11"
+  default = "12"
 }
 
 

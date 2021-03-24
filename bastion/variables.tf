@@ -73,15 +73,6 @@ variable "bastion_github_file" {
   }
 }
 
-variable "enable_hourly_cron_updates" {
-  default = "false"
-}
-
-variable "cron_key_update_schedule" {
-  default     = "5,0,*,* * * * *"
-  description = "The cron schedule that public keys are synced from the bastion s3 bucket to the server; default to once every hour"
-}
-
 variable "additional_user_data_script" {
   default = ""
 }

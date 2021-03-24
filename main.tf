@@ -51,6 +51,8 @@ module "rds" {
   db_username           = var.db_username
   db_password           = var.db_password
   db_port               = var.db_port
+  db_engine_version = var.db_engine_version
+  db_major_version = var.db_major_version
   db_snapshot_migration = var.db_snapshot_migration
 
   tags = var.tags
@@ -97,6 +99,7 @@ module "ecs" {
 module "r53" {
   source = "./r53"
 
+  // count = var.domain_name == "" || length(var.host_names) == 1 && var.host_names[0] == "" ? 0 : 1
   // Input from other Modules
   alb_external_dns  = module.applicationlb.lb_dns_name
 
@@ -116,12 +119,10 @@ module "bastion" {
   account_id   = var.account_id
   project_name = var.project_name
   environment  = var.environment
+  key_name = var.key_name
   domain_name = var.domain_name
   bastion_hostname = var.bastion_hostname
-  key_name = var.key_name
-
   bastion_instance_type    = var.bastion_instance_type
-  cron_key_update_schedule = var.cron_key_update_schedule
   bastion_github_file      = var.bastion_github_file
 
   tags = var.tags

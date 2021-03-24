@@ -42,6 +42,7 @@ variable "key_name" {
 variable "bastion_hostname" {
   type        = string
   description = "The hostname bastion, must be a subdomain of the domain_name"
+  default = ""
 }
 
 variable "vpc_cidr" {
@@ -69,10 +70,17 @@ variable "ecs_ec2_instance_count" {
 // --------------------------
 // RDS/Database Variables
 // --------------------------
+variable "create_db_instance" {
+  type        = string
+  description = "Flag to create DB Instace"
+  default = "false"
+}
+
 variable "db_username" {
   type        = string
   description = "Databse Username"
 }
+
 variable "db_password" {
   type        = string
   description = "Databse Password"
@@ -80,7 +88,22 @@ variable "db_password" {
 
 variable "db_port" {
   type        = number
-  description = "Databse Port"
+  description = "Databse Port, defaults to Postgres Port"
+  default = 5432
+}
+
+variable "db_instance_class" {
+  description = "The instance type of the db; defaults to db.t2.small"
+  default     = "db.t3.small"
+}
+
+variable "db_engine_version" {
+  description = "the database major and minor version of postgres; default to 11.10"
+  default     = "12.5"
+}
+
+variable "db_major_version" {
+  default = "12"
 }
 
 variable "db_snapshot_migration" {
@@ -95,11 +118,6 @@ variable "db_snapshot_migration" {
 variable "bastion_instance_type" {
   description = "The ec2 instance type of the bastion server"
   default     = "t2.micro"
-}
-
-variable "cron_key_update_schedule" {
-  default     = "5,0,*,* * * * *"
-  description = "The cron schedule that public keys are synced from the bastion s3 bucket to the server; default to once every hour"
 }
 
 variable "bastion_github_file" {
